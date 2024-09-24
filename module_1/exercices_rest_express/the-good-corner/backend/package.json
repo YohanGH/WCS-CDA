@@ -1,0 +1,22 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "To install dependencies:",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "ts-node-dev ./src/index.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "faker": "^6.6.6",
+    "ts-node-dev": "^2.0.0"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^9.0.2",
+    "@types/express": "^4.17.21"
+  }
+}
