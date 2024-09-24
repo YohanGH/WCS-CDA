@@ -1,12 +1,12 @@
 GET http://localhost:3310/ads
 
-### 
+###
 
 POST http://localhost:3310/ads
 Content-Type: application/json
 
 {
-    "id": 1,
+    "id": 11,
     "title": "Bike to sell",
     "description":
       "My bike is blue, working fine. I'm selling it because I've got a new one",
@@ -17,3 +17,17 @@ Content-Type: application/json
     "location": "Paris",
     "createdAt": "2023-09-05T10:13:14.755Z"
   }
+
+###
+
+PUT http://localhost:3310/ads/2
+Content-Type: application/json
+
+{
+  "id": 5,
+  "location": "Lyon"
+}
+
+###
+
+DELETE http://localhost:3310/ads/2
