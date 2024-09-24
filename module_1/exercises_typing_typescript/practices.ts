@@ -41,7 +41,7 @@ const notification2: Notif = { at: 1694011532, state: "read" };
 
 // Practices 4
 
-function readNotificationOrMessage(notificationOrMessage: Message | Notif) { // type this line
+function readNotificationOrMessage(notificationOrMessage: Message | Notif): void {
 	// put some logic here to mark as read a message or a notif
 	// this function does NOT return anything
 
