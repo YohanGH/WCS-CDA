@@ -22,9 +22,10 @@ const message2: Message = { from: "Alice", message: "Hi Bob!" };
 // Practices 2
 
 const messages: Message[] = [message1, message2];
-function readMessages(messages: Message[]): void {
+function readMessages(messages: Message[]): number {
 	// put some logic to set isRead to true on all messages
 	messages.forEach(message => message.isRead = true);
+    return messages.length;
 }
 readMessages(messages);
 
