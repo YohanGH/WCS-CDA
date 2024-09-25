@@ -41,7 +41,7 @@ Here are the technologies and programming languages mainly used during my work:
 1. Clone the repository: 
 
 ```shell
-git clone 
+git clone https://github.com/YohanGH/WCS-CDA.git
 ```
 
 2. Navigate in folder module_x / exercices_y
