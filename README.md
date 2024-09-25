@@ -26,6 +26,7 @@ Here are the technologies and programming languages mainly used during my work:
 - HTML / CSS
 - JavaScript / TypeScript 
 - React / Express
+- SQL
 - Node.js
 - Git / GitHub
 
@@ -34,6 +35,7 @@ Here are the technologies and programming languages mainly used during my work:
 - Module 1 : 
     - Introduce fundamentals TypeScripte
     - Introduce in backend with Ts / Express
+    - Introduce in SQL
 
 
 ## Getting Started

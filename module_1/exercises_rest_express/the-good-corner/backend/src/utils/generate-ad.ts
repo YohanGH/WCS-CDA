@@ -1,8 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { Ad } from "../types/ad";
 
-export const generateRandomAd = (id: number): Ad => ({
-        id,
+export const generateRandomAd = (): Omit<Ad, "id">  => ({
         title: faker.commerce.productName(),
         description: faker.lorem.sentence(),
         owner: faker.internet.email(),
@@ -12,9 +11,7 @@ export const generateRandomAd = (id: number): Ad => ({
         createdAt: new Date().toISOString(),
 });
 
-export let lastId = 10;
-
-export const ads: Ad[] = Array.from({ length: 10 }, (_, i) =>
-  generateRandomAd(i + 1)
+export const ads: Omit<Ad, "id">[] = Array.from({ length: 10 }, () =>
+  generateRandomAd()
 );
 
