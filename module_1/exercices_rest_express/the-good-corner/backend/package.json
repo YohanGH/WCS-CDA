@@ -2,10 +2,10 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "To install dependencies:",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "ts-node-dev ./src/index.ts"
+    "start": "ts-node-dev ./src/server.ts"
   },
   "author": "",
   "license": "ISC",
@@ -13,6 +13,7 @@
     "dotenv": "^16.4.5",
     "express": "^4.21.0",
     "faker": "^6.6.6",
+    "joi": "^17.13.3",
     "ts-node-dev": "^2.0.0"
   },
   "devDependencies": {
