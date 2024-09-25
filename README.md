@@ -24,10 +24,48 @@ As part of my CDA training, I worked on various projects and exercises to improv
 Here are the technologies and programming languages mainly used during my work:
 
 - HTML / CSS
-- JavaScript / TypeScript / React
+- JavaScript / TypeScript 
+- React / Express
 - Node.js
 - Git / GitHub
 
 ## Exercices
 
-- Module 1 : Introduce fundamentals TypeScripte
+- Module 1 : 
+    - Introduce fundamentals TypeScripte
+    - Introduce in backend with Ts / Express
+
+
+## Getting Started
+
+1. Clone the repository: 
+
+```shell
+git clone 
+```
+
+2. Navigate in folder module_x / exercices_y
+
+```shell
+cd my/path/in/folder
+```
+
+3. Install dependencies:
+
+```shell
+npm install
+```
+
+4. Create `.env`
+
+```shell
+cp .env.sample .env
+```
+
+5. Running the App
+
+```shell
+npm start
+```
+
+The app will be default running on http://localhost:3000.
