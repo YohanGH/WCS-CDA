@@ -6,7 +6,6 @@ POST http://localhost:3310/ads
 Content-Type: application/json
 
 {
-    "id": 11,
     "title": "Bike to sell",
     "description":
       "My bike is blue, working fine. I'm selling it because I've got a new one",
@@ -20,14 +19,28 @@ Content-Type: application/json
 
 ###
 
-PUT http://localhost:3310/ads/2
+PUT http://localhost:3310/ads/11
 Content-Type: application/json
 
 {
-  "id": 5,
-  "price": "Bulshit"
+  "owner": "Pablo",
+  "title": "Bulshit",
+  "price": 145,
+  "createdAt": "2000-10-11"
 }
 
 ###
 
-DELETE http://localhost:3310/ads/2
+PATCH http://localhost:3310/ads/11
+Content-Type: application/json
+
+{
+  "owner": "Max",
+  "title": "Beer",
+  "price": 100,
+  "createdAt": "2000-10-10"
+}
+
+###
+
+DELETE http://localhost:3310/ads/52
