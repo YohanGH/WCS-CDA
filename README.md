@@ -13,7 +13,8 @@ As part of my CDA training, I worked on various projects and exercises to improv
 ```md
 .
 ├── module_1
-|   ├── exercises_typing_typescript
+|   ├── exercices_rest_express
+|   └── exercises_typing_typescript
 │       └── practices
 └── ...
 ```
