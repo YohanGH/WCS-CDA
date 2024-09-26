@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { Ad } from "../types/ad";
+import { Ad } from "../types/types";
 
 export const generateRandomAd = (): Omit<Ad, "id">  => ({
         title: faker.commerce.productName(),
@@ -9,6 +9,7 @@ export const generateRandomAd = (): Omit<Ad, "id">  => ({
         picture: faker.image.avatar(),
         location: faker.address.city(),
         createdAt: new Date().toISOString(),
+        categoryId: Math.floor(Math.random() * 3) + 1
 });
 
 export const ads: Omit<Ad, "id">[] = Array.from({ length: 10 }, () =>

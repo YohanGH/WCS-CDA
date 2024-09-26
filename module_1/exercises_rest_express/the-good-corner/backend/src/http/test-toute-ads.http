@@ -1,0 +1,25 @@
+@baseUrl = http://localhost:3310/ads
+@adId = 9
+
+### GET all ads
+GET {{baseUrl}}
+
+###
+
+### POST a new ad
+POST {{baseUrl}}
+
+###
+
+### PUT to update an ad
+PUT {{baseUrl}}/{{adId}}
+
+###
+
+### PATCH to modify an ad
+PATCH {{baseUrl}}/{{adId}}
+
+###
+
+### DELETE an ad
+DELETE {{baseUrl}}/{{adId}}

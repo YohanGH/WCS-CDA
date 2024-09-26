@@ -1,7 +1,15 @@
 import { Request, Response, NextFunction } from "express";
 
+// Interface for Apperror structure
+interface IAppError {
+  status: number;
+  isOperational: Boolean;
+  errorType?: string;
+  additionalInfo?: string;
+}
+
 // AppError class with proper TypeScript types
-class AppError extends Error {
+class AppError extends Error implements IAppError {
   status: number;
   isOperational: boolean;
   errorType?: string;
