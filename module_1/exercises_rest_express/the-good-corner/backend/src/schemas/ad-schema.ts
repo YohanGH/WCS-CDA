@@ -8,6 +8,7 @@ const adSchema = Joi.object({
   picture: Joi.string().optional(),
   location: Joi.string().optional(),
   createdAt: Joi.string().required(),
+  categoryId: Joi.number().required(),
 });
 
 export default adSchema;
