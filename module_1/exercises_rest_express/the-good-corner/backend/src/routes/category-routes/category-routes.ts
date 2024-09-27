@@ -3,53 +3,36 @@ import { Request, Response, NextFunction } from "express";
 import { generateRandomCategory } from "../../utils/generate-category";
 import categorySchema from "../../schemas/category-schema";
 import { AppError } from "../../middlewares/error-handler";
-import sqlite3 from "sqlite3";
+import { Category } from "../../database/entities/category";
 
 const router = express.Router();
 
-// Function to close the database connection safely
-const closeDatabase: (db: sqlite3.Database, next: NextFunction) => void = (
-  db,
-  next
-) => {
-  db.close((err: Error | null) => {
-    if (err) {
-      return next(new AppError(err.message, 500, "DatabaseCloseError"));
-    }
-  });
-};
-
 // Get all categorys
-router.get("/", (req: Request, res: Response, next: NextFunction) => {
-  // Open Database
-  const db = new sqlite3.Database("./src/database/good_corner.sqlite");
-
+router.get("/", async (req: Request, res: Response, next: NextFunction) => {
   try {
-    db.all(
-      "SELECT category.id, category.title FROM category",
-      [],
-      (err: Error | null, rows: any[]) => {
-        if (err) {
-          return next(new AppError(err.message, 500, "DatabaseError"));
-        }
-        res.send(rows);
-      }
-    );
-  } catch (err) {
-    next(err);
-  } finally {
-    closeDatabase(db, next);
+    const categories = await Category.find();
+
+    if (!categories || categories.length === 0) {
+      return next(new AppError("No categories found", 404, "NotFoundError"));
+    }
+
+    res.send(categories);
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      next(new AppError(err.message, 500, "DatabaseError"));
+    } else {
+      next(new AppError("An unknown error occurred", 500, "DatabaseError"));
+    }
   }
 });
 
 // Post a new category
-router.post("/", (req: Request, res: Response, next: NextFunction) => {
-  // Open Database
-  const db = new sqlite3.Database("./src/database/good_corner.sqlite");
-
+router.post("/", async (req: Request, res: Response, next: NextFunction) => {
   try {
     // Generate a random category
-    const categoryData = Object.keys(req.body).length ? req.body : generateRandomCategory();
+    const categoryData = Object.keys(req.body).length
+      ? req.body
+      : generateRandomCategory();
 
     // Validate tha category using Joi schema
     const { error } = categorySchema.validate(categoryData);
@@ -63,129 +46,76 @@ router.post("/", (req: Request, res: Response, next: NextFunction) => {
     }
 
     // Create a new object with request body data
-    const { title } = categoryData;
+    const newCategory = Category.create({
+      title: categoryData.title,
+    });
 
     // Insert tge new category into SQLite
-    const result = new Promise<{ lastID: number }>((resolve, reject) => {
-      db.run(`INSERT INTO category (title) VALUES (?)`, [title], function (err) {
-        if (err) {
-          return reject(err);
-        }
-        // `this.lastID` content ID in new line
-        resolve({ lastID: this.lastID });
-      });
-    });
+    await newCategory.save();
 
     // Responde with the created category and a 201 status
     res.status(201).json({
-      id: result, // result.lastId
-      title,
+      id: newCategory.id,
+      title: newCategory.title,
     });
-  } catch (err) {
-    next(err);
-  } finally {
-    closeDatabase(db, next);
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      next(new AppError(err.message, 500, "DatabaseError"));
+    } else {
+      next(new AppError("An unknown error occurred", 500, "DatabaseError"));
+    }
   }
 });
 
 // Update an category by id
 router.patch("/:id", async (req: Request, res: Response, next: NextFunction) => {
-    // Open Database
-    const db = new sqlite3.Database("./src/database/good_corner.sqlite");
-
     try {
       const id = Number(req.params.id);
 
-      // Generate Random inforamtion
-      const randomcategory = generateRandomCategory();
+      const category = await Category.findOne({ where: { id } });
+
+      if (!category) {
+        return next(new AppError("Category not found", 404, "NotFoundError"));
+      }
 
       // Merges random data and data sent by the user
       const categoryData = {
-        ...randomcategory, // random default values
+        ...generateRandomCategory(), // random default values
         ...req.body, // overwrites with user-supplied values
       };
 
       // Validate the provider category fields (allow partial updates)
       const { error } = categorySchema.validate(categoryData, {
-        allowUnknown: true,
-        skipFunctions: true,
+        allowUnknown: true, // Allows additional properties not defined in the schema
+        skipFunctions: true, // Skips validation for function properties
       });
 
       if (error) {
         throw new AppError(error.details[0].message, 400, "ValidationError");
       }
 
-      // Construct SQL query dynamically based on fields provided
-      let sqlQuery = "UPDATE category SET ";
-      const params: any[] = [];
+      category.title = categoryData.title;
 
-      const bodyKeys: string[] = Object.keys(categoryData);
-
-      // Loop over request body
-      bodyKeys.forEach((key, index) => {
-        if (!["id", "createdAt"].includes(key)) {
-          sqlQuery += `${key} = ?`;
-          if (index < bodyKeys.length - 1) {
-            sqlQuery += ", ";
-          }
-          params.push(categoryData[key]);
-        }
-      });
-
-      // Ensure there something to updAATE
-      if (params.length === 0) {
-        return next(
-          new AppError(
-            "No valid fields provided to upgrcategorye",
-            400,
-            "ValidatError"
-          )
-        );
+      res.send({ message: "Category updated successfully", categoryData });
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        next(new AppError(err.message, 500, "DatabaseError"));
+      } else {
+        next(new AppError("An unknown error occurred", 500, "DatabaseError"));
       }
-
-      //.Remove any trailing comma and space before categoryding WHERE clause
-      sqlQuery = sqlQuery.trim().replace(/,\s*$/, "");
-
-      // Apprend the ID to the params for WHERE clause
-      sqlQuery += " WHERE id = ?";
-      params.push(id);
-
-      // Run the update query
-      await new Promise<void>((resolve, reject) => {
-        db.run(sqlQuery, params, function (err) {
-          if (err) {
-            return reject(new AppError(err.message, 500, "DatabaseError"));
-          }
-          if (this.changes === 0) {
-            return reject(new AppError("category not found", 404, "NotFoundError"));
-          }
-          resolve();
-        });
-      });
-
-      res.send({ message: "category updated successfully", categoryData });
-    } catch (err) {
-      next(err);
-    } finally {
-      closeDatabase(db, next);
     }
   }
 );
 
 // Update an category by id
 router.put("/:id", async (req: Request, res: Response, next: NextFunction) => {
-  // Open Database
-  const db = new sqlite3.Database("./src/database/good_corner.sqlite");
-
   try {
     const id = Number(req.params.id);
-
-    // Generate random informaTion
-    const randomcategory = generateRandomCategory();
+    const category = await Category.findOne({ where: { id } });
 
     // Merges random data and data sent by the user
     const categoryData = {
-      ...randomcategory, // random default values
+      ...generateRandomCategory(), // random default values
       ...req.body, // overwrites with user-supplied values
     };
 
@@ -195,54 +125,45 @@ router.put("/:id", async (req: Request, res: Response, next: NextFunction) => {
       throw new AppError(error.details[0].message, 400, "ValidateError");
     }
 
-    // Extract updated fields from the request
-    const { title } = categoryData;
-
-    // Update the category in SQLite
-    const result = await new Promise<{ changes: number }>((resolve, reject) => {
-      db.run(`UPDATE category SET title = ? WHERE id = ?`, [title, id], function (err) {
-        if (err) {
-          return reject(err);
-        }
-        // `this.lastID` content ID in new line
-        resolve({ changes: this.changes });
-      });
-    });
-
-    if (result.changes === 0) {
-      return next(new AppError("category not found", 404, "NotFoundError"));
+    if (category) {
+      category.title = categoryData.title;
+      await category.save();
+    } else {
+      // Handle the case where category is null (e.g., throw an error or return a response)
+      throw new Error("Category not found");
     }
 
     res.send({ message: "category updated successfully", categoryData });
   } catch (err) {
-    next(err);
-  } finally {
-    closeDatabase(db, next);
+    if (err instanceof Error) {
+      next(new AppError(err.message, 500, "DatabaseError"));
+    } else {
+      next(new AppError("An unknown error occurred", 500, "DatabaseError"));
+    }
   }
 });
 
 // Delete an category by id
-router.delete("/:id", (req: Request, res: Response, next: NextFunction) => {
-  // Open Database
-  const db = new sqlite3.Database("./src/database/good_corner.sqlite");
+router.delete("/:id", async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const id = Number(req.params.id);
 
-  try {
-    const id = Number(req.params.id);
+      const deleteResult = await Category.delete({ id });
 
-    db.run("DELETE FROM category WHERE id = ?", [id], function (err) {
-      if (err) {
-        return next(new AppError(err.message, 500, "DatabaseError"));
+      // Check if the category existed and has been deleted
+      if (deleteResult.affected === 0) {
+        return next(new AppError("Category not found", 404, "NotFoundError"));
       }
-      if (this.changes === 0) {
-        return next(new AppError("category not found", 404, "NotFoundError"));
+
+      res.status(204).send({ message: "Ad Delete successfully", deleteResult });
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        next(new AppError(err.message, 500, "DatabaseError"));
+      } else {
+        next(new AppError("An unknown error occurred", 500, "DatabaseError"));
       }
-      res.status(204).send({ message: "Ad Delete successfully"});
-    });
-  } catch (err) {
-    next(err);
-  } finally {
-    closeDatabase(db, next);
+    }
   }
-});
+);
 
 export default router;

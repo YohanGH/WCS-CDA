@@ -9,10 +9,15 @@ export const generateRandomAd = (): Omit<Ad, "id">  => ({
         picture: faker.image.avatar(),
         location: faker.address.city(),
         createdAt: new Date().toISOString(),
-        categoryId: Math.floor(Math.random() * 3) + 1
+        category: { 
+          id: Math.floor(Math.random() * 3) + 1
+        },
+        tags: {
+          id: Math.floor(Math.random() * 3) + 1
+        }
 });
 
-export const ads: Omit<Ad, "id">[] = Array.from({ length: 10 }, () =>
+export const ads: Omit<Ad, "id">[] = Array.from({ length: 1 }, () =>
   generateRandomAd()
 );
 
