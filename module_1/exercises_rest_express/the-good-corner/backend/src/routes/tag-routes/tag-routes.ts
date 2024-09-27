@@ -1,26 +1,22 @@
 import express from "express";
 import { Request, Response, NextFunction } from "express";
-import { generateRandomAd } from "../../utils/generate-ad";
-import adSchema from "../../schemas/ad-schema";
+import { generateRandomTag } from "../../utils/generate-tag";
+import tagSchema from "../../schemas/tag-schema";
 import { AppError } from "../../middlewares/error-handler";
-import { Ad } from "../../database/entities/ad";
+import { Tag } from "../../database/entities/tag";
 
 const router = express.Router();
 
-// Get all ads
+// Get all Tags
 router.get("/", async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const ads = await Ad.find({
-      relations: {
-        tags: true
-      }
-    });
+    const tags = await Tag.find();
 
-    if (!ads || ads.length === 0) {
-      return next(new AppError("No ad found", 404, "NotFoundError"));
+    if (!tags || tags.length === 0) {
+      return next(new AppError("No tags found", 404, "NotFoundError"));
     }
 
-    res.status(201).send(ads);
+    res.send(tags);
   } catch (err: unknown) {
     if (err instanceof Error) {
       next(new AppError(err.message, 500, "DatabaseError"));
@@ -30,31 +26,39 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
   }
 });
 
-// Post a new ad
+// Post a new Tag
 router.post("/", async (req: Request, res: Response, next: NextFunction) => {
   try {
-    // Generate a random ad
-    const adData = Object.keys(req.body).length ? req.body : generateRandomAd();
-    console.log("ICI ==> ", adData)
+    // Generate a random Tag
+    const tagData = Object.keys(req.body).length
+      ? req.body
+      : generateRandomTag();
 
-    // Validate tha ad using Joi schema
-    const { error } = adSchema.validate(adData);
+    // Validate tha Tag using Joi schema
+    const { error } = tagSchema.validate(tagData);
     if (error) {
       throw new AppError(
         error.details[0].message,
         400,
         "ValidationError",
-        "Invalid ad data provided"
+        "Invalid Tag data provided"
       );
     }
 
-    // Create and save the new ad
-    const newAd = Ad.create(adData);
-    await newAd.save();
+    // Create a new object with request body data
+    const newTag = Tag.create({
+      title: tagData.title,
+    });
 
-    // Responde with the created ad and a 201 status
-    res.status(201).json(newAd);
-  } catch (err) {
+    // Insert tge new Tag into SQLite
+    await newTag.save();
+
+    // Responde with the created Tag and a 201 status
+    res.status(201).json({
+      id: newTag.id,
+      title: newTag.title,
+    });
+  } catch (err: unknown) {
     if (err instanceof Error) {
       next(new AppError(err.message, 500, "DatabaseError"));
     } else {
@@ -63,21 +67,25 @@ router.post("/", async (req: Request, res: Response, next: NextFunction) => {
   }
 });
 
-// Update an ad by id
+// Update an Tag by id
 router.patch("/:id", async (req: Request, res: Response, next: NextFunction) => {
     try {
       const id = Number(req.params.id);
 
-      const ad = await Ad.findOne({ where: { id } });
+      const tag = await Tag.findOne({ where: { id } });
+
+      if (!tag) {
+        return next(new AppError("Tag not found", 404, "NotFoundError"));
+      }
 
       // Merges random data and data sent by the user
-      const adData = {
-        ...generateRandomAd(), // random default values
+      const tagData = {
+        ...generateRandomTag(), // random default values
         ...req.body, // overwrites with user-supplied values
       };
 
-      // Validate the provider ad fields (allow partial updates)
-      const { error } = adSchema.validate(adData, {
+      // Validate the provider Tag fields (allow partial updates)
+      const { error } = tagSchema.validate(tagData, {
         allowUnknown: true, // Allows additional properties not defined in the schema
         skipFunctions: true, // Skips validation for function properties
       });
@@ -86,15 +94,10 @@ router.patch("/:id", async (req: Request, res: Response, next: NextFunction) => 
         throw new AppError(error.details[0].message, 400, "ValidationError");
       }
 
-      if (ad) {
-        ad.title = adData.title;
-      } else {
-        // Handle the case where 'ad' is null
-        throw new Error("Ad not found");
-      }
+      tag.title = tagData.title;
 
-      res.send({ message: "Ad updated successfully", adData });
-    } catch (err) {
+      res.send({ message: "Tag updated successfully", tagData });
+    } catch (err: unknown) {
       if (err instanceof Error) {
         next(new AppError(err.message, 500, "DatabaseError"));
       } else {
@@ -104,33 +107,33 @@ router.patch("/:id", async (req: Request, res: Response, next: NextFunction) => 
   }
 );
 
-// Update an ad by id
+// Update an Tag by id
 router.put("/:id", async (req: Request, res: Response, next: NextFunction) => {
   try {
     const id = Number(req.params.id);
-    const ad = await Ad.findOne({ where: { id } });
+    const tag = await Tag.findOne({ where: { id } });
 
     // Merges random data and data sent by the user
-    const adData = {
-      ...generateRandomAd(), // random default values
+    const tagData = {
+      ...generateRandomTag(), // random default values
       ...req.body, // overwrites with user-supplied values
     };
 
-    // Validate the updated ad
-    const { error } = adSchema.validate(adData);
+    // Validate the updated Tag
+    const { error } = tagSchema.validate(tagData);
     if (error) {
       throw new AppError(error.details[0].message, 400, "ValidateError");
     }
 
-    if (ad) {
-      ad.title = adData.title;
-      await ad.save();
+    if (tag) {
+      tag.title = tagData.title;
+      await tag.save();
     } else {
-      // Handle the case where ad is null (e.g., throw an error or return a response)
-      throw new Error("Ad not found");
+      // Handle the case where Tag is null (e.g., throw an error or return a response)
+      throw new Error("Tag not found");
     }
 
-    res.send({ message: "Ad updated successfully", adData });
+    res.send({ message: "Tag updated successfully", tagData });
   } catch (err) {
     if (err instanceof Error) {
       next(new AppError(err.message, 500, "DatabaseError"));
@@ -140,16 +143,16 @@ router.put("/:id", async (req: Request, res: Response, next: NextFunction) => {
   }
 });
 
-// Delete an ad by id
+// Delete an Tag by id
 router.delete("/:id", async (req: Request, res: Response, next: NextFunction) => {
     try {
       const id = Number(req.params.id);
 
-      const deleteResult = await Ad.delete({ id });
+      const deleteResult = await Tag.delete({ id });
 
-      // Check if the ad existed and has been deleted
+      // Check if the Tag existed and has been deleted
       if (deleteResult.affected === 0) {
-        return next(new AppError("Ad not found", 404, "NotFoundError"));
+        return next(new AppError("Tag not found", 404, "NotFoundError"));
       }
 
       res.status(204).send({ message: "Ad Delete successfully", deleteResult });

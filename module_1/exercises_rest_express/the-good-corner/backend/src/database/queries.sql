@@ -4,6 +4,12 @@
     title TEXT NOT NULL
   )
 
+-- Create table Category
+  CREATE TABLE IF NOT EXISTS tag (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL
+  )
+
 -- Create table Ad
   CREATE TABLE IF NOT EXISTS ad (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -13,9 +19,9 @@
   price INTEGER NOT NULL,
   picture TEXT,
   location TEXT,
-  categoryId INTEGER NOT NULL,
+  category INTEGER NOT NULL,
   createdAt DATE NOT NULL,
-  FOREIGN KEY (categoryId) REFERENCES catagrory(id)
+  FOREIGN KEY (category) REFERENCES catagrory(id)
   );
 
 -- Create column
@@ -26,7 +32,7 @@ VALUES
 ("other");
 
 -- Insert Data
-INSERT INTO ad (title, description, owner, price, picture, location, createdAt, categoryId)
+INSERT INTO ad (title, description, owner, price, picture, location, createdAt, category)
 VALUES
 ('Annonce 1', 'Description 1', 'user1@example.com', 50, 'image1.jpg', 'Paris', '2024-09-02', 1),
 ('Annonce 2', 'Description 2', 'user2@example.com', 50, 'image2.jpg', 'Paris', '2024-09-02', 2),

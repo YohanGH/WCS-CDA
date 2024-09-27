@@ -7,8 +7,13 @@ const adSchema = Joi.object({
   price: Joi.number().required(),
   picture: Joi.string().optional(),
   location: Joi.string().optional(),
-  createdAt: Joi.string().required(),
-  categoryId: Joi.number().required(),
+  createdAt: Joi.date().required(),
+  category: Joi.object({
+    id: Joi.number().required()
+  }).required(),
+  tags: Joi.object({
+    id: Joi.number().required()
+  }).required(),
 });
 
 export default adSchema;
