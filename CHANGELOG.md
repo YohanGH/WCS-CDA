@@ -1,5 +1,6 @@
 # CHANGELOG
 
+- Part 3 backend build database with ORM change logic code ==> { commit: 69fb79aea39b917c77c7a9c0d7e08248f311f190 }
 - Part 2 backend build database and add new table and refactoring code ==> { commit: 2b4d8ccc1abea59e9f12fc8c6df1e4800fa26613}
 - Introduction backend build database and connect app in database ==> { commit: 376ffde8d9046dce8d3d5ba0015bbcee4f24bea8 }
 - Introduction backend build api rest with express ==> { commit: 6b8870829a03cb4127e5e1df6aacfd02af5751e1 }

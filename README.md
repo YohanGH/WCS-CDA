@@ -14,6 +14,7 @@ As part of my CDA training, I worked on various projects and exercises to improv
 .
 ├── module_1
 |   ├── exercices_rest_express
+|       └──...
 |   └── exercises_typing_typescript
 │       └── practices
 └── ...
@@ -26,7 +27,7 @@ Here are the technologies and programming languages mainly used during my work:
 - HTML / CSS
 - JavaScript / TypeScript 
 - React / Express
-- SQL
+- SQL / SQLite / 
 - Node.js
 - Git / GitHub
 
