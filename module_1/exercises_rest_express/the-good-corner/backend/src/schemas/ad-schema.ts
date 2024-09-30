@@ -11,9 +11,11 @@ const adSchema = Joi.object({
   category: Joi.object({
     id: Joi.number().required()
   }).required(),
-  tags: Joi.object({
-    id: Joi.number().required()
-  }).required(),
+  tags: Joi.array().items(
+    Joi.object({
+      id: Joi.number().required()
+    })
+  ).optional()
 });
 
 export default adSchema;

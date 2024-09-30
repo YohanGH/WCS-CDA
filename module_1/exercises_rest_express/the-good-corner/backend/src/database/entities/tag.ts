@@ -7,10 +7,9 @@ export class Tag extends BaseEntity {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @Column()
+    @Column({ length: 255 })
     title!: string;
 
-    @ManyToMany(() => Ad, (ad) => ad.tags)
-        @JoinTable()
+    @ManyToMany(() => Ad, (ad) => ad.tags, { onDelete: 'CASCADE'})
     ads!: Ad[];
 }

@@ -8,7 +8,7 @@ export type Ad = {
   location: string;
   createdAt: string;
   category: { id: number };
-  tags: { id: number };
+  tags?: { id: number }[];
 };
 
 export type Category = {
