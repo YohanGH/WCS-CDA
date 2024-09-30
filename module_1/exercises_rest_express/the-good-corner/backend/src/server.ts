@@ -5,7 +5,7 @@ import categoryRoutes from "./routes/category-routes/category-routes";
 import tagRoutes from "./routes/tag-routes/tag-routes";
 import errorHandler from "./middlewares/error-handler";
 import "reflect-metadata";
-import { dataSource } from "./database/datasource";
+import dataSource from "./database/config/datasource";
 
 dotenv.config();
 const app = express();

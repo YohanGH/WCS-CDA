@@ -1,5 +1,5 @@
 @baseUrl = http://localhost:3310/tag
-@adId = 1
+@adId = 2
 
 ### GET all category
 GET {{baseUrl}}

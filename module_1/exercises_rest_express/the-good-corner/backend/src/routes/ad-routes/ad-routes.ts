@@ -12,8 +12,8 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
   try {
     const ads = await Ad.find({
       relations: {
-        tags: true
-      }
+        tags: true,
+      },
     });
 
     if (!ads || ads.length === 0) {
@@ -30,12 +30,11 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
   }
 });
 
-// Post a new ad
 router.post("/", async (req: Request, res: Response, next: NextFunction) => {
   try {
     // Generate a random ad
     const adData = Object.keys(req.body).length ? req.body : generateRandomAd();
-    console.log("ICI ==> ", adData)
+    console.log("ICI ==> ", adData);
 
     // Validate tha ad using Joi schema
     const { error } = adSchema.validate(adData);
