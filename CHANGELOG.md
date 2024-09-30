@@ -1,5 +1,6 @@
 # CHANGELOG
 
+- Part 5 frontend build with vite and react, first components, page ==>  { commit: b02e8433e97ae9e853d41fc4fcf1245dfadbc2f9 }
 - Part 4 backend build database and add tag, and add migration in ORM ==> { commit: fafa06abb6fe0415e5ec17d206bc34fac4983d2b }
 - Part 3 backend build database with ORM change logic code ==> { commit: 69fb79aea39b917c77c7a9c0d7e08248f311f190 }
 - Part 2 backend build database and add new table and refactoring code ==> { commit: 2b4d8ccc1abea59e9f12fc8c6df1e4800fa26613}
