@@ -41,6 +41,13 @@ Here are the technologies and programming languages mainly used during my work:
     - Introduce fundamentals TypeScripte
     - Introduce in backend with Ts / Express
     - Introduce in SQL
+    - Introduce in ORM
+    - Introduce in React, vite
+    - Introduce in basic components
+    - Introduce in cors
+    - Introduce in form
+    - Introduce in connexion backend and frontend
+    - 
 
 
 ## Getting Started
@@ -69,10 +76,16 @@ npm install
 cp .env.sample .env
 ```
 
-5. Running the App
+5. Running the App backend
 
 ```shell
 npm start
+```
+
+7. Running the App frontend
+
+```shell
+npm run dev
 ```
 
 The app will be default running on http://localhost:3000.
