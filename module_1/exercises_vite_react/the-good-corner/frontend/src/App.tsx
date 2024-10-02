@@ -5,13 +5,13 @@ import Header from "./components/sections/Header";
 
 function App() {
   return (
-    <div>
+    <>
       <Header />
       <main className="main-content">
         <Outlet />
       </main>
       <Footer />
-    </div>
+    </>
   );
 }
 
