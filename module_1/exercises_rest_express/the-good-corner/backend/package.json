@@ -15,6 +15,7 @@
   "license": "ISC",
   "dependencies": {
     "class-validator": "^0.14.1",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.0",
     "faker": "^6.6.6",
@@ -26,6 +27,7 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^9.0.2",
+    "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21"
   }
 }

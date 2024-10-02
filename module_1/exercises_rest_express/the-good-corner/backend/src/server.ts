@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import dotenv from "dotenv";
 import adRoutes from "./routes/ad-routes/ad-routes";
 import categoryRoutes from "./routes/category-routes/category-routes";
@@ -10,8 +11,12 @@ import dataSource from "./database/config/datasource";
 dotenv.config();
 const app = express();
 const port = process.env.APP_PORT || 3000;
+const portClient = process.env.APP_PORT_CLIENT;
 
 app.use(express.json());
+app.use(cors({
+  origin: `${portClient}`,
+}));
 app.use("/ads", adRoutes);
 app.use("/category", categoryRoutes);
 app.use("/tag", tagRoutes);

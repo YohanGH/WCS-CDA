@@ -1,9 +1,11 @@
 import React, { useState} from "react";
+import { useParams } from "react-router-dom";
 import AdList from "../components/sections/AdsList";
 
-const Home: React.FC = () => {
+const Category: React.FC = () => {
   // TODO : Refacto logic panier in global context
   const [cartTotal, setCartTotal] = useState<number>(0);
+  const { slug } = useParams<{ slug: string }>();
 
   const onAddToCart = (price: number) => {
     setCartTotal(cartTotal + price);
@@ -11,8 +13,11 @@ const Home: React.FC = () => {
 
   return (
     <div>
-      <h2>Annonces récentes</h2>
-      <AdList onAddToCart={onAddToCart} />
+      <div>
+        <h1>Catégorie : {slug}</h1>
+        <p>Détails de la catégorie pour le slug : {slug}</p>
+        <AdList onAddToCart={onAddToCart} />
+      </div>
 
       {/* Display basket total */}
       <div className="cart-total">
@@ -22,4 +27,4 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home;
+export default Category;

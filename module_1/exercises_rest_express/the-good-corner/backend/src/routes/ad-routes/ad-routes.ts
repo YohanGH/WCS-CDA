@@ -20,7 +20,7 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
       return next(new AppError("No ad found", 404, "NotFoundError"));
     }
 
-    res.status(201).send(ads);
+    res.status(200).send(ads);
   } catch (err: unknown) {
     if (err instanceof Error) {
       next(new AppError(err.message, 500, "DatabaseError"));
@@ -34,7 +34,6 @@ router.post("/", async (req: Request, res: Response, next: NextFunction) => {
   try {
     // Generate a random ad
     const adData = Object.keys(req.body).length ? req.body : generateRandomAd();
-    console.log("ICI ==> ", adData);
 
     // Validate tha ad using Joi schema
     const { error } = adSchema.validate(adData);

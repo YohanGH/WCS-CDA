@@ -1,4 +1,4 @@
-// Practices 0
+s// Practices 0
 
 const messsageText: string  = "Hello Bob!"; // you should type on this line
 const messageCreatedAt: Date = new Date();

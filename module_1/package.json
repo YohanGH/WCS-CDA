@@ -3,9 +3,14 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "concurrently \"npm run frontend\" \"npm run backend\"",
+    "frontend": "cd exercises_vite_react/the-good-corner/frontend && npm run dev",
+    "backend": "cd exercises_rest_express/the-good-corner/backend && npm start"
   },
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "concurrently": "^9.0.1"
+  }
 }

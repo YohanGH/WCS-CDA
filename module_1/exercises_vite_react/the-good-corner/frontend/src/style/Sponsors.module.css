@@ -1,0 +1,28 @@
+/* SponsorsSection.module.css */
+
+.sponsorsSection {
+  max-width: 75%;
+}
+
+.marqueeContainer {
+  margin: 0 auto;
+}
+
+.marquee {
+  gap: 3rem;
+}
+
+.sponsorItem {
+  display: flex;
+  align-items: center;
+  font-size: 0.5rem;
+  font-weight: 500;
+}
+
+.sponsorItemLarge {
+  font-size: 0.5rem;
+}
+
+.iconMargin {
+  margin-right: 0.5rem;
+}
