@@ -1,31 +1,51 @@
-import App from "../App.tsx";
+import { lazy, Suspense } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Home from "../pages/Home.tsx";
-import Ad from "../pages/Ad.tsx";
-import Category from "../pages/Category.tsx";
+import App from "../App.tsx";
 import NotFound from "../pages/NotFound.tsx";
-import AdForm from "../pages/AdForm.tsx";
+
+// Using lazy loading for pages
+const Home = lazy(() => import("../pages/Home.tsx"));
+const Ad = lazy(() => import("../pages/Ad.tsx"));
+const AdForm = lazy(() => import("../pages/AdForm.tsx"));
+const Category = lazy(() => import("../pages/Category.tsx"));
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+    errorElement: <div>Quelque chose n'a pas fonctionné.</div>, // TODO : Create a beautifful components for error
     children: [
       {
         path: "/",
-        element: <Home />,
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <Home />
+          </Suspense>
+        ),
       },
       {
-        path: "ads/:slug",
-        element: <Ad />,
+        path: "ads/:id",
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <Ad />
+          </Suspense>
+        ),
       },
       {
         path: "/post-ad",
-        element: <AdForm/>
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <AdForm />
+          </Suspense>
+        ),
       },
       {
         path: "category/:slug",
-        element: <Category />,
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <Category />
+          </Suspense>
+        ),
       },
     ],
   },

@@ -1,15 +1,11 @@
-import React, { useState} from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
 import AdList from "../components/sections/AdsList";
+import { useCart } from "../hooks/useCart";
 
 const Category: React.FC = () => {
-  // TODO : Refacto logic panier in global context
-  const [cartTotal, setCartTotal] = useState<number>(0);
+  const { cartTotal, onAddToCart } = useCart();
   const { slug } = useParams<{ slug: string }>();
-
-  const onAddToCart = (price: number) => {
-    setCartTotal(cartTotal + price);
-  };
 
   return (
     <div>

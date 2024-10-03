@@ -1,13 +1,7 @@
 import { Link } from "react-router-dom";
+import { CardProps } from "../../types/types";
 
-type CardProps = {
-  title: string;
-  price: number;
-  imageSrc: string;
-  link: string;
-  onAddToCart: (price: number) => void;
-};
-
+// TODO : Mouve Responsibility for the add-to-cart button
 const Card: React.FC<CardProps> = ({ title, price, imageSrc, link, onAddToCart }) => {
 
   return (
@@ -16,7 +10,7 @@ const Card: React.FC<CardProps> = ({ title, price, imageSrc, link, onAddToCart }
         <img className="ad-card-image" src={imageSrc} alt={title} />
         <div className="ad-card-text">
           <div className="ad-card-title">{title}</div>
-          <div className="ad-card-price">{price} €</div>
+          <div className="ad-card-price">{price.toFixed(2)} €</div>
         </div>
       </Link>
       <button className="button" onClick={() => onAddToCart(price)}>

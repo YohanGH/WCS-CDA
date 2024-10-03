@@ -9,20 +9,33 @@ const apiUrl: string =
 
 const Navigation: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchAds = async () => {
+    const fetchCategories = async () => {
       try {
         const response = await axios.get<Category[]>(`${apiUrl}/category`);
         setCategories(response.data);
       } catch (error) {
         console.error("Error retrieving ads", error);
+        setError("Erreur lors du chargement des catégories.");
         toast.error("Erreur lors du chargement des catégories.");
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchAds();
+    fetchCategories();
   }, []);
+
+  if (loading) {
+    return <p>Chargement des categories...</p>; // TODO : Create beautiful components for Loading
+  }
+
+  if (error) {
+    return <p>{error}</p>; // TODO : Create beautif components for error
+  }
 
   return (
     <nav className="categories-navigation">
@@ -39,7 +52,7 @@ const Navigation: React.FC = () => {
           </React.Fragment>
         ))
       ) : (
-        <p>Chargement des catégories...</p>
+        <p>Aucune catégorie disponible</p>
       )}
     </nav>
   );

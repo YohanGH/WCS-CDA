@@ -7,7 +7,7 @@ function App() {
   return (
     <>
       <Header />
-      <main className="main-content">
+      <main className="main-content" aria-label="Main Content">
         <Outlet />
       </main>
       <Footer />

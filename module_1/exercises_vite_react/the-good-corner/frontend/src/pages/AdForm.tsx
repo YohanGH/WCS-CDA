@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import styles from "../style/AdForm.module.css";
+import styles from "../styles/AdForm.module.css";
 import { Category, Tag } from "../types/types";
+import { useNavigate } from "react-router-dom";
 
 const apiUrl: string =
   import.meta.env.VITE_APP_API_URL || "http://localhost:3000";
@@ -23,40 +24,30 @@ const AdForm: React.FC = () => {
   const [loadingCategories, setLoadingCategories] = useState<boolean>(true);
   const [loadingTags, setLoadingTags] = useState<boolean>(true);
 
+  const navigate = useNavigate();
   const currentDate = new Date().toISOString();
 
-  // Recovery of existing categories
+  // Recovery of existing categories and tags
   useEffect(() => {
-    const fetchCategories = async () => {
+    const fetchData = async () => {
       try {
-        const response = await axios.get<Category[]>(`${apiUrl}/category`);
-        setCategories(response.data);
+        const [categoriesResponse, tagsResponse] = await Promise.all([
+          axios.get<Category[]>(`${apiUrl}/category`),
+          axios.get<Tag[]>(`${apiUrl}/tag`),
+        ]);
+
+        setCategories(categoriesResponse.data);
+        setTags(tagsResponse.data);
       } catch (error) {
-        console.error("Erreur lors de la récupération des catégories", error);
-        toast.error("Erreur lors du chargement des catégories.");
+        console.error("Erreur lors de la récupération des données", error);
+        toast.error("Erreur lors du chargement des données.");
       } finally {
-        setLoadingCategories(false); // Stop loading
+        setLoadingCategories(false);
+        setLoadingTags(false);
       }
     };
 
-    fetchCategories();
-  }, []);
-
-  // Recovery of existing tags
-  useEffect(() => {
-    const fetchTags = async () => {
-      try {
-        const response = await axios.get<Tag[]>(`${apiUrl}/tag`);
-        setTags(response.data);
-      } catch (error) {
-        console.error("Erreur lors de la récupération des tags", error);
-        toast.error("Erreur lors du chargement des tags.");
-      } finally {
-        setLoadingTags(false); // Stop loading
-      }
-    };
-
-    fetchTags();
+    fetchData();
   }, []);
 
   const validateForm = () => {
@@ -64,29 +55,26 @@ const AdForm: React.FC = () => {
       return "Tous les champs sont obligatoires.";
     }
 
-    if (isNaN(Number(price))) {
-      return "Le prix doit être un nombre valide.";
+    if (!price || isNaN(price) || Number(price) <= 0) {
+      return "Le prix doit être un nombre valide supérieur à zéro.";
     }
 
-    if (Number(price) <= 0) {
-      return "Le prix doit être supérieur à zéro.";
-    }
-
-    if (!imageURL.startsWith("http") || !imageURL.startsWith("https")) {
+    if (!imageURL.startsWith("http") && !imageURL.startsWith("https")) {
       return "L'URL de l'image doit être valide.";
     }
 
     return null;
   };
-  
+
   // Manage tag selection/deselection
-const handleTagToggle = (tagId: number) => {
-  setSelectedTags((prevTags) =>
-    prevTags.includes(tagId)
-      ? prevTags.filter((id) => id !== tagId) // unselected
-      : [...prevTags, tagId] // selected
-  );
-};
+  const handleTagToggle = (tagId: number) => {
+    setSelectedTags(
+      (prevTags) =>
+        prevTags.includes(tagId)
+          ? prevTags.filter((id) => id !== tagId) // unselected
+          : [...prevTags, tagId] // selected
+    );
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -125,6 +113,10 @@ const handleTagToggle = (tagId: number) => {
         setCategory(undefined);
         setSelectedTags([]);
         setImageURL("");
+
+        // Redirect after success
+        const createdAdId = response.data.id;
+        navigate(`ads/${createdAdId}`, { replace: true });
       } else {
         toast.error("Erreur lors de la création de l'annonce.");
       }
