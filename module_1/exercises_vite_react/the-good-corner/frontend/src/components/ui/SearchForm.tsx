@@ -1,10 +1,18 @@
 import React from "react";
+import { SearchFormProps } from "../../types/types";
 
-const SearchForm: React.FC = () => {
+const SearchForm: React.FC<SearchFormProps> = ({ value, onChange, onSubmit }) => {
   return (
-    <form className="text-field-with-button">
-      <input className="text-field main-search-field" type="search" />
-      <button className="button button-primary">
+    <form className="text-field-with-button" onSubmit={onSubmit}>
+      <input
+        className="text-field main-search-field"
+        type="search"
+        value={value}
+        onChange={onChange}
+        aria-label="Search field"
+        placeholder="Rechercher..."
+      />
+      <button type="submit" className="button button-primary" aria-label="Search">
         <svg
           aria-hidden="true"
           width="16"
