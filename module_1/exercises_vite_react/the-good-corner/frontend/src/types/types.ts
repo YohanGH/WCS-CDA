@@ -1,4 +1,4 @@
-export type Ad = {
+export type AdType = {
   id: number;
   title: string;
   description: string;
@@ -11,7 +11,7 @@ export type Ad = {
   tags?: { id: number }[];
 };
 
-export type Category = {
+export type CategoryType = {
   id: number
   title: string;
 }
@@ -32,7 +32,6 @@ export type CardProps = {
   price: number;
   imageSrc: string;
   link: string;
-  onAddToCart: (price: number) => void;
 };
 
 export interface GlobalContextProps {
@@ -47,10 +46,16 @@ export type SearchFormProps = {
 }
 
 export type AdListProps = {
-  onAddToCart: (price: number) => void;
+  categoryId?: string;
 }
 
 export type DarkModeContextProps = {
   isDarkMode: boolean;
   toggleDarkMode: () => void;
 }
+
+export type CategoryWithAds = {
+  id: number;
+  title: string;
+  ads: AdType[];
+};

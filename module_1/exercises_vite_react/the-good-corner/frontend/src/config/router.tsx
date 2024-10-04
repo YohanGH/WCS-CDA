@@ -40,7 +40,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "category/:slug",
+        path: "category/:id",
         element: (
           <Suspense fallback={<div>Loading...</div>}>
             <Category />

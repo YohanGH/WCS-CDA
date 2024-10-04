@@ -4,6 +4,7 @@ import Navigation from "../ui/Navigation";
 import AdPost from "../ui/AdPost";
 import SearchForm from "../ui/SearchForm";
 import DarkModeToggle from "../ui/DarkModeToggle";
+import CartSummary from "../ui/CartSummary";
 
 const Header: React.FC = () => {
   const [searchValue, setSearchValue] = useState<string>("");
@@ -28,6 +29,7 @@ const Header: React.FC = () => {
             onChange={handleSearchChange}
             onSubmit={handleSearchSubmit}
           />
+          <CartSummary />
           <AdPost />
           <DarkModeToggle />
         </div>
