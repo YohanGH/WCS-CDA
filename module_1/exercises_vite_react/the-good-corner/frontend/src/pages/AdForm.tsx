@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import styles from "../styles/AdForm.module.css";
-import { Category, Tag } from "../types/types";
+import { CategoryType, Tag } from "../types/types";
 import { useNavigate } from "react-router-dom";
 
 const apiUrl: string =
@@ -19,7 +19,7 @@ const AdForm: React.FC = () => {
   const [imageURL, setImageURL] = useState<string>("");
 
   // State to store categories and tag
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<CategoryType[]>([]);
   const [tags, setTags] = useState<Tag[]>([]);
   const [loadingCategories, setLoadingCategories] = useState<boolean>(true);
   const [loadingTags, setLoadingTags] = useState<boolean>(true);
@@ -32,7 +32,7 @@ const AdForm: React.FC = () => {
     const fetchData = async () => {
       try {
         const [categoriesResponse, tagsResponse] = await Promise.all([
-          axios.get<Category[]>(`${apiUrl}/category`),
+          axios.get<CategoryType[]>(`${apiUrl}/category`),
           axios.get<Tag[]>(`${apiUrl}/tag`),
         ]);
 
