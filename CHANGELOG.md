@@ -1,5 +1,5 @@
 # CHANGELOG
-
+- Part 8 frontend build context with ligth and dark, add connexion in back delete, fetch with filter ==> { commit: 73559b6442bd07182d193c0627710bbb52023125 }
 - Part 7 frontend build context, and management errors, refacto code ==> { commit: 1a3ffbca755c503173e27c374a6879252ea47d83 }
 - Part 6 frontend build components and page react, connexion in backend (get, post) for announces ==> { commit: 3c7d2bd55b5880040f5e7a6bdaf0095726a8ed49 }
 - Part 5 frontend build with vite and react, first components, page ==>  { commit: b02e8433e97ae9e853d41fc4fcf1245dfadbc2f9 }
