@@ -1,22 +1,32 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Card from "../ui/Card";
-import { Ad, AdListProps } from "../../types/types";
+import { AdType, AdListProps, CategoryWithAds } from "../../types/types";
 import toast from "react-hot-toast";
 
 const apiUrl: string =
   import.meta.env.VITE_APP_API_URL || "http://localhost:3000";
 
-const AdList: React.FC<AdListProps> = ({ onAddToCart }) => {
-  const [ads, setAds] = useState<Ad[]>([]);
+const AdList: React.FC<AdListProps> = ({ categoryId }) => {
+  const [ads, setAds] = useState<AdType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchAds = async () => {
       try {
-        const response = await axios.get<Ad[]>(`${apiUrl}/ads`);
-        setAds(response.data);
+        let url: string = `${apiUrl}/ads`;
+
+        // If a `categoryId` is provided, we add a filter on the category
+        if (categoryId) {
+          url = `${apiUrl}/category/${categoryId}`;
+          const response = await axios.get<CategoryWithAds>(url);
+          const adsData: AdType[] = response.data.ads; // Access ads in the category
+          setAds(adsData);
+        } else {
+          const response = await axios.get<AdType[]>(url);
+          setAds(response.data); // Update status with all ads
+        }
       } catch (error) {
         console.error("Error retrieving ads", error);
         setError("Erreur lors du chargement des annonces.");
@@ -27,7 +37,7 @@ const AdList: React.FC<AdListProps> = ({ onAddToCart }) => {
     };
 
     fetchAds();
-  }, []);
+  }, [categoryId]);
 
   if (loading) {
     return <p>Chargement des annonces...</p>; // TODO : Create beautiful components for Loading
@@ -47,7 +57,6 @@ const AdList: React.FC<AdListProps> = ({ onAddToCart }) => {
             price={ad.price}
             imageSrc={ad.picture}
             link={`/ads/${ad.id}`}
-            onAddToCart={() => onAddToCart(ad.price)}
           />
         ))
       ) : (

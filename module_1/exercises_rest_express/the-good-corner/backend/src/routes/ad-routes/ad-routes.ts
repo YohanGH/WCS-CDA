@@ -30,6 +30,31 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
   }
 });
 
+router.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
+  const id = parseInt(req.params.id, 10);
+
+  try {
+    const ads = await Ad.findOne({
+      where: { id },
+      relations: {
+        tags: true,
+      },
+    });
+
+    if (!ads) {
+      return next(new AppError("No ad found", 404, "NotFoundError"));
+    }
+
+    res.status(200).send(ads);
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      next(new AppError(err.message, 500, "DatabaseError"));
+    } else {
+      next(new AppError("An unknown error occurred", 500, "DatabaseError"));
+    }
+  }
+});
+
 router.post("/", async (req: Request, res: Response, next: NextFunction) => {
   try {
     // Generate a random ad

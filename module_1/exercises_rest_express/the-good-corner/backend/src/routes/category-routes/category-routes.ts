@@ -26,6 +26,39 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
   }
 });
 
+// Get one category
+router.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const id = Number(req.params.id);
+
+    // Checks that the ID is valid
+    if (isNaN(id)) {
+      return next(new AppError("Invalid category ID", 400, "ValidationError"));
+    }
+
+    const category = await Category.findOne({
+      where: { id },
+      relations: {
+        ads: {
+          tags: true,
+        },
+      },
+    });
+
+    if (!category) {
+      return next(new AppError("No categories found", 404, "NotFoundError"));
+    }
+
+    res.send(category);
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      next(new AppError(err.message, 500, "DatabaseError"));
+    } else {
+      next(new AppError("An unknown error occurred", 500, "DatabaseError"));
+    }
+  }
+});
+
 // Post a new category
 router.post("/", async (req: Request, res: Response, next: NextFunction) => {
   try {
