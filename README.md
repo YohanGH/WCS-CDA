@@ -48,6 +48,7 @@ Here are the technologies and programming languages mainly used during my work:
     - Introduce in form
     - Introduce in connexion backend and frontend
     - Introduce in basic hooks react (useState, useEffect ...)
+    - Introduce in Tailwind and Shadcn
 
 
 ## Getting Started

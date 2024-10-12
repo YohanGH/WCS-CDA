@@ -1,4 +1,5 @@
 # CHANGELOG
+- Part 9 frontend build context with tailwind and shadcn ==> { commit: 688245336c30ecfe87d80e44735eb2138aaa1074 }
 - Part 8 frontend build context with ligth and dark, add connexion in back delete, fetch with filter ==> { commit: 73559b6442bd07182d193c0627710bbb52023125 }
 - Part 7 frontend build context, and management errors, refacto code ==> { commit: 1a3ffbca755c503173e27c374a6879252ea47d83 }
 - Part 6 frontend build components and page react, connexion in backend (get, post) for announces ==> { commit: 3c7d2bd55b5880040f5e7a6bdaf0095726a8ed49 }
