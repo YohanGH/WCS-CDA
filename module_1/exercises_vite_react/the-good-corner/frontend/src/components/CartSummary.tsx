@@ -1,5 +1,5 @@
 import { ShoppingCart } from "lucide-react";
-import { useCart } from "../../hooks/useCart";
+import { useCart } from "../hooks/useCart";
 
 const CartSummary: React.FC = () => {
     const { cartTotal } = useCart();

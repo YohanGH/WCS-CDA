@@ -1,13 +1,8 @@
 import React from "react";
-import AdList from "../components/sections/AdsList";
+import RecentAds from "../components/sections/RecentAds";
 
 const Home: React.FC = () => {
-  return (
-    <div>
-      <h2>Annonces récentes</h2>
-      <AdList />
-    </div>
-  );
+  return <RecentAds />;
 };
 
 export default Home;

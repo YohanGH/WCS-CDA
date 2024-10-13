@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import styles from "../styles/AdForm.module.css";
 import { CategoryType, Tag } from "../types/types";
 import { useNavigate } from "react-router-dom";
 
@@ -127,16 +126,16 @@ const AdForm: React.FC = () => {
   };
 
   return (
-    <div className={styles.container}>
-      <h1 className={styles.heading}>Créer une annonce</h1>
+    <div>
+      <h1>Créer une annonce</h1>
       <meta
         name="description"
         content="Créez une annonce sur notre plateforme pour vendre vos produits rapidement."
       />
       <meta name="robots" content="index, follow" />
 
-      <form onSubmit={handleSubmit} className={styles.form}>
-        <div className={styles.formGroup}>
+      <form onSubmit={handleSubmit}>
+        <div>
           <label htmlFor="title">Titre de l'annonce</label>
           <input
             type="text"
@@ -147,11 +146,10 @@ const AdForm: React.FC = () => {
             required
             maxLength={100}
             placeholder="Entrez un titre descriptif"
-            className={styles.input}
           />
         </div>
 
-        <div className={styles.formGroup}>
+        <div>
           <label htmlFor="title">Nom du vendeur</label>
           <input
             type="text"
@@ -162,11 +160,10 @@ const AdForm: React.FC = () => {
             required
             maxLength={100}
             placeholder="Entrez votre nom"
-            className={styles.input}
           />
         </div>
 
-        <div className={styles.formGroup}>
+        <div>
           <label htmlFor="price">Prix (€)</label>
           <input
             type="text"
@@ -176,11 +173,10 @@ const AdForm: React.FC = () => {
             onChange={(e) => setPrice(Number(e.target.value))}
             required
             placeholder="Entrez le prix"
-            className={styles.input}
           />
         </div>
 
-        <div className={styles.formGroup}>
+        <div>
           <label htmlFor="description">Description</label>
           <textarea
             id="description"
@@ -191,11 +187,10 @@ const AdForm: React.FC = () => {
             rows={4}
             maxLength={500}
             placeholder="Entrez une description détaillée"
-            className={styles.textarea}
           />
         </div>
 
-        <div className={styles.formGroup}>
+        <div>
           <label htmlFor="location ">Localisation</label>
           <input
             id="location"
@@ -205,11 +200,10 @@ const AdForm: React.FC = () => {
             required
             maxLength={500}
             placeholder="Entrez une localisation"
-            className={styles.input}
           />
         </div>
 
-        <div className={styles.formGroup}>
+        <div>
           <label htmlFor="category">Catégorie</label>
           {loadingCategories ? (
             <p>Chargement des catégories...</p>
@@ -220,7 +214,6 @@ const AdForm: React.FC = () => {
               value={category}
               onChange={(e) => setCategory(Number(e.target.value))}
               required
-              className={styles.select}
             >
               <option value="">Sélectionnez une catégorie</option>
               {categories.length > 0 ? (
@@ -236,14 +229,14 @@ const AdForm: React.FC = () => {
           )}
         </div>
 
-        <div className={styles.formGroup}>
+        <div>
           <label htmlFor="tags">Tags</label>
           {loadingTags ? (
             <p>Chargement des tags...</p>
           ) : (
-            <div className={styles.tagsContainer}>
+            <div>
               {tags.map((tag) => (
-                <div key={tag.id} className={styles.tagItem}>
+                <div key={tag.id}>
                   <input
                     type="checkbox"
                     id={`tag-${tag.id}`}
@@ -258,7 +251,7 @@ const AdForm: React.FC = () => {
           )}
         </div>
 
-        <div className={styles.formGroup}>
+        <div>
           <label htmlFor="picture">URL de l'image</label>
           <input
             type="url"
@@ -267,11 +260,10 @@ const AdForm: React.FC = () => {
             onChange={(e) => setImageURL(e.target.value)}
             required
             placeholder="Entre l'URL de l'image"
-            className={styles.input}
           />
         </div>
 
-        <button type="submit" className={styles.submitButton}>
+        <button type="submit">
           Créer l'annonce
         </button>
       </form>
