@@ -48,11 +48,11 @@ const RecentAds: React.FC<AdListProps> = ({ categoryId }) => {
   }
 
   if (error) {
-    return <p className="text-center text-red-500">{error}</p>;
+    return <p className="text-center text-neon-red">{error}</p>;
   }
 
   return (
-    <section className="py-16 px-6 bg-gray-800">
+    <section className="py-16 px-6 bg-secondary">
       <div className="container mx-auto">
         <h2 className="text-3xl font-bold mb-8 text-center text-neon-blue">
           Annonces récentes
@@ -69,8 +69,8 @@ const RecentAds: React.FC<AdListProps> = ({ categoryId }) => {
               />
             ))
           ) : (
-            <p className="text-center text-gray-400">
-              Aucune annonce disponible
+            <p className="text-center text-neon-green">
+              Aucune annonce disponible !!!
             </p>
           )}
         </div>
