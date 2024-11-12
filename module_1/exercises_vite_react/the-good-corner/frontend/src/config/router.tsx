@@ -2,31 +2,35 @@ import { lazy, Suspense } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "../App.tsx";
 import NotFound from "../pages/NotFound.tsx";
+import CyberpunkLoader from "@/components/CyberpunkLoader.tsx";
+import ErrorElement from "@/components/ErrorElement.tsx";
 
 // Using lazy loading for pages
 const Home = lazy(() => import("../pages/Home.tsx"));
 const Ad = lazy(() => import("../pages/Ad.tsx"));
 const AdForm = lazy(() => import("../pages/AdForm.tsx"));
 const Category = lazy(() => import("../pages/Category.tsx"));
+// Test error
+const ErrorTest = lazy(() => import("../test/ui/ErrorTest.tsx"));
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
-    errorElement: <div>Quelque chose n'a pas fonctionné.</div>, // TODO : Create a beautifful components for error
+    errorElement: <ErrorElement />,
     children: [
       {
         path: "/",
         element: (
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<CyberpunkLoader />}>
             <Home />
           </Suspense>
         ),
       },
       {
-        path: "ads/:id",
+        path: "/ads/:id",
         element: (
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<CyberpunkLoader />}>
             <Ad />
           </Suspense>
         ),
@@ -34,16 +38,32 @@ const router = createBrowserRouter([
       {
         path: "/post-ad",
         element: (
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<CyberpunkLoader />}>
             <AdForm />
           </Suspense>
         ),
       },
       {
-        path: "category/:id",
+        path: "/category",
         element: (
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<CyberpunkLoader />}>
             <Category />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/category/:id",
+        element: (
+          <Suspense fallback={<CyberpunkLoader />}>
+            <Category />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/test-error",
+        element: (
+          <Suspense fallback={<CyberpunkLoader />}>
+            <ErrorTest />
           </Suspense>
         ),
       },

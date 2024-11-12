@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Card from "../ui/Card";
+import AdCard from "../AdCard";
 import { AdType, AdListProps, CategoryWithAds } from "../../types/types";
 import toast from "react-hot-toast";
 
 const apiUrl: string =
   import.meta.env.VITE_APP_API_URL || "http://localhost:3000";
 
-const AdList: React.FC<AdListProps> = ({ categoryId }) => {
+const RecentAds: React.FC<AdListProps> = ({ categoryId }) => {
   const [ads, setAds] = useState<AdType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -40,30 +40,43 @@ const AdList: React.FC<AdListProps> = ({ categoryId }) => {
   }, [categoryId]);
 
   if (loading) {
-    return <p>Chargement des annonces...</p>; // TODO : Create beautiful components for Loading
+    return (
+      <div className="flex justify-center items-center">
+        <div className="loader border-t-4 border-b-4 border-neon-green rounded-full w-12 h-12 animate-spin"></div>
+      </div>
+    );
   }
 
   if (error) {
-    return <p>{error}</p>; // TODO : Create beautif components for error
+    return <p className="text-center text-neon-red">{error}</p>;
   }
 
   return (
-    <section className="recent-ads">
-      {ads && ads.length > 0 ? (
-        ads.map((ad) => (
-          <Card
-            key={ad.id}
-            title={ad.title}
-            price={ad.price}
-            imageSrc={ad.picture}
-            link={`/ads/${ad.id}`}
-          />
-        ))
-      ) : (
-        <p>Aucune annonce disponible</p>
-      )}
+    <section className="py-16 px-6 bg-secondary">
+      <div className="container mx-auto">
+        <h2 className="text-3xl font-bold mb-8 text-center text-neon-blue">
+          Annonces récentes
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {ads && ads.length > 0 ? (
+            ads.map((ad) => (
+              <AdCard
+                key={ad.id}
+                title={ad.title}
+                price={ad.price}
+                imageSrc={ad.picture}
+                link={`/ads/${ad.id}`}
+              />
+            ))
+          ) : (
+            <p className="text-center text-neon-green">
+              Aucune annonce disponible !!!
+            </p>
+          )}
+        </div>
+      </div>
     </section>
   );
 };
 
-export default AdList;
+export default RecentAds;

@@ -1,31 +1,76 @@
-import { Link } from "react-router-dom";
-import { CardProps } from "../../types/types";
-import { useCart } from "../../hooks/useCart";
-import toast from "react-hot-toast";
+import * as React from "react"
 
-// TODO : Mouve Responsibility for the add-to-cart button
-const Card: React.FC<CardProps> = ({ title, price, imageSrc, link }) => {
-  const { onAddToCart } = useCart();
+import { cn } from "@/lib/utils"
 
-  const handleAddToCart = () => {
-    onAddToCart(price);
-    toast.success(`Ajouté ${title} au panier pour ${price.toFixed(2)}€`);
-  };
+const Card = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn(
+      "rounded-xl border bg-card text-card-foreground shadow",
+      className
+    )}
+    {...props}
+  />
+))
+Card.displayName = "Card"
 
-  return (
-    <div className="ad-card-container">
-      <Link className="ad-card-link" to={link}>
-        <img className="ad-card-image" src={imageSrc} alt={title} />
-        <div className="ad-card-text">
-          <div className="ad-card-title">{title}</div>
-          <div className="ad-card-price">{price.toFixed(2)} €</div>
-        </div>
-      </Link>
-      <button className="button" onClick={handleAddToCart}>
-        Ajouter l'article au panier
-      </button>
-    </div>
-  );
-};
+const CardHeader = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn("flex flex-col space-y-1.5 p-6", className)}
+    {...props}
+  />
+))
+CardHeader.displayName = "CardHeader"
 
-export default Card;
+const CardTitle = React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLHeadingElement>
+>(({ className, ...props }, ref) => (
+  <h3
+    ref={ref}
+    className={cn("font-semibold leading-none tracking-tight", className)}
+    {...props}
+  />
+))
+CardTitle.displayName = "CardTitle"
+
+const CardDescription = React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLParagraphElement>
+>(({ className, ...props }, ref) => (
+  <p
+    ref={ref}
+    className={cn("text-sm text-muted-foreground", className)}
+    {...props}
+  />
+))
+CardDescription.displayName = "CardDescription"
+
+const CardContent = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />
+))
+CardContent.displayName = "CardContent"
+
+const CardFooter = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn("flex items-center p-6 pt-0", className)}
+    {...props}
+  />
+))
+CardFooter.displayName = "CardFooter"
+
+export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent }

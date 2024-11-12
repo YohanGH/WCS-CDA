@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import styles from "../styles/AdForm.module.css";
 import { CategoryType, Tag } from "../types/types";
 import { useNavigate } from "react-router-dom";
 
@@ -127,17 +126,21 @@ const AdForm: React.FC = () => {
   };
 
   return (
-    <div className={styles.container}>
-      <h1 className={styles.heading}>Créer une annonce</h1>
+    <div className="min-h-screen bg-gradient-to-r from-gray-900 to-black text-neon-blue p-8">
+      <h1 className="text-4xl font-bold mb-8 text-center text-neon-pink glitch-text">
+        Créer une annonce
+      </h1>
       <meta
         name="description"
         content="Créez une annonce sur notre plateforme pour vendre vos produits rapidement."
       />
       <meta name="robots" content="index, follow" />
 
-      <form onSubmit={handleSubmit} className={styles.form}>
-        <div className={styles.formGroup}>
-          <label htmlFor="title">Titre de l'annonce</label>
+      <form onSubmit={handleSubmit} className="max-w-2xl mx-auto space-y-6">
+        <div className="space-y-2">
+          <label htmlFor="title" className="block text-neon-green">
+            Titre de l'annonce
+          </label>
           <input
             type="text"
             id="title"
@@ -147,12 +150,14 @@ const AdForm: React.FC = () => {
             required
             maxLength={100}
             placeholder="Entrez un titre descriptif"
-            className={styles.input}
+            className="w-full bg-gray-800 border border-neon-blue rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-neon-pink"
           />
         </div>
 
-        <div className={styles.formGroup}>
-          <label htmlFor="title">Nom du vendeur</label>
+        <div className="space-y-2">
+          <label htmlFor="title" className="block text-neon-green">
+            Nom du vendeur
+          </label>
           <input
             type="text"
             id="owner"
@@ -162,12 +167,14 @@ const AdForm: React.FC = () => {
             required
             maxLength={100}
             placeholder="Entrez votre nom"
-            className={styles.input}
+            className="w-full bg-gray-800 border border-neon-blue rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-neon-pink"
           />
         </div>
 
-        <div className={styles.formGroup}>
-          <label htmlFor="price">Prix (€)</label>
+        <div className="space-y-2">
+          <label htmlFor="price" className="block text-neon-green">
+            Prix (€)
+          </label>
           <input
             type="text"
             id="price"
@@ -176,12 +183,14 @@ const AdForm: React.FC = () => {
             onChange={(e) => setPrice(Number(e.target.value))}
             required
             placeholder="Entrez le prix"
-            className={styles.input}
+            className="w-full bg-gray-800 border border-neon-blue rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-neon-pink"
           />
         </div>
 
-        <div className={styles.formGroup}>
-          <label htmlFor="description">Description</label>
+        <div className="space-y-2">
+          <label htmlFor="description" className="block text-neon-green">
+            Description
+          </label>
           <textarea
             id="description"
             name="description"
@@ -191,12 +200,14 @@ const AdForm: React.FC = () => {
             rows={4}
             maxLength={500}
             placeholder="Entrez une description détaillée"
-            className={styles.textarea}
+            className="w-full bg-gray-800 border border-neon-blue rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-neon-pink"
           />
         </div>
 
-        <div className={styles.formGroup}>
-          <label htmlFor="location ">Localisation</label>
+        <div className="space-y-2">
+          <label htmlFor="location" className="block text-neon-green">
+            Localisation
+          </label>
           <input
             id="location"
             name="location"
@@ -205,12 +216,14 @@ const AdForm: React.FC = () => {
             required
             maxLength={500}
             placeholder="Entrez une localisation"
-            className={styles.input}
+            className="w-full bg-gray-800 border border-neon-blue rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-neon-pink"
           />
         </div>
 
-        <div className={styles.formGroup}>
-          <label htmlFor="category">Catégorie</label>
+        <div className="space-y-2">
+          <label htmlFor="category" className="block text-neon-green">
+            Catégorie
+          </label>
           {loadingCategories ? (
             <p>Chargement des catégories...</p>
           ) : (
@@ -220,7 +233,7 @@ const AdForm: React.FC = () => {
               value={category}
               onChange={(e) => setCategory(Number(e.target.value))}
               required
-              className={styles.select}
+              className="w-full bg-gray-800 border border-neon-blue rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-neon-pink"
             >
               <option value="">Sélectionnez une catégorie</option>
               {categories.length > 0 ? (
@@ -236,30 +249,42 @@ const AdForm: React.FC = () => {
           )}
         </div>
 
-        <div className={styles.formGroup}>
-          <label htmlFor="tags">Tags</label>
+        <div className="space-y-2">
+          <label htmlFor="tags" className="block text-neon-green">
+            Tags
+          </label>
           {loadingTags ? (
             <p>Chargement des tags...</p>
           ) : (
-            <div className={styles.tagsContainer}>
-              {tags.map((tag) => (
-                <div key={tag.id} className={styles.tagItem}>
-                  <input
-                    type="checkbox"
-                    id={`tag-${tag.id}`}
-                    value={tag.id}
-                    checked={selectedTags.includes(tag.id)}
-                    onChange={() => handleTagToggle(tag.id)}
-                  />
-                  <label htmlFor={`tag-${tag.id}`}>{tag.title}</label>
-                </div>
-              ))}
+            <div className="space-y-2">
+              <div className="grid grid-cols-2 gap-2">
+                {tags.map((tag) => (
+                  <label key={tag.id} className="grid grid-cols-2 gap-2">
+                    <input
+                      type="checkbox"
+                      id={`tag-${tag.id}`}
+                      value={tag.id}
+                      checked={selectedTags.includes(tag.id)}
+                      onChange={() => handleTagToggle(tag.id)}
+                      className="form-checkbox text-neon-pink"
+                    />
+                    <label
+                      htmlFor={`tag-${tag.id}`}
+                      className="flex items-center space-x-2"
+                    >
+                      {tag.title}
+                    </label>
+                  </label>
+                ))}
+              </div>
             </div>
           )}
         </div>
 
-        <div className={styles.formGroup}>
-          <label htmlFor="picture">URL de l'image</label>
+        <div className="space-y-2">
+          <label htmlFor="picture" className="block text-neon-green">
+            URL de l'image
+          </label>
           <input
             type="url"
             id="imageURL"
@@ -267,11 +292,14 @@ const AdForm: React.FC = () => {
             onChange={(e) => setImageURL(e.target.value)}
             required
             placeholder="Entre l'URL de l'image"
-            className={styles.input}
+            className="w-full bg-gray-800 border border-neon-blue rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-neon-pink"
           />
         </div>
 
-        <button type="submit" className={styles.submitButton}>
+        <button
+          type="submit"
+          className="w-full bg-neon-pink text-black font-bold py-2 px-4 rounded hover:bg-neon-blue transition duration-300 ease-in-out transform hover:scale-105"
+        >
           Créer l'annonce
         </button>
       </form>

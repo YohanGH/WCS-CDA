@@ -10,12 +10,12 @@ import dataSource from "./database/config/datasource";
 
 dotenv.config();
 const app = express();
-const port = process.env.APP_PORT || 3000;
-const portClient = process.env.APP_PORT_CLIENT;
+const port = process.env.APP_PORT || 3310;
+const portFrontend = process.env.APP_PORT_FRONTEND || "http://localhost:5173";
 
 app.use(express.json());
 app.use(cors({
-  origin: `${portClient}`,
+  origin: portFrontend,
 }));
 app.use("/ads", adRoutes);
 app.use("/category", categoryRoutes);
