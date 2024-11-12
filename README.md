@@ -34,6 +34,7 @@ Here are the technologies and programming languages mainly used during my work:
 - SQL / SQLite / 
 - Node.js
 - Git / GitHub
+- Tailwind / Shadcn
 
 ## Exercices
 

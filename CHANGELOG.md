@@ -1,4 +1,5 @@
 # CHANGELOG
+- Refacto Refacto frontend tailwind shadcn ==> { commit: eaa682e4afa9a6fe47e2d268bbe1f8281491345d }
 - Part 9 frontend build context with tailwind and shadcn ==> { commit: 688245336c30ecfe87d80e44735eb2138aaa1074 }
 - Part 8 frontend build context with ligth and dark, add connexion in back delete, fetch with filter ==> { commit: 73559b6442bd07182d193c0627710bbb52023125 }
 - Part 7 frontend build context, and management errors, refacto code ==> { commit: 1a3ffbca755c503173e27c374a6879252ea47d83 }
