@@ -58,6 +58,9 @@ Here are the technologies and programming languages mainly used during my work:
 
 ## Getting Started
 
+
+### project exercices frontend and backend
+
 1. Clone the repository: 
 
 ```shell
@@ -73,7 +76,7 @@ cd my/path/in/folder
 3. Install dependencies:
 
 ```shell
-npm install
+pnpm install
 ```
 
 4. Create `.env`
@@ -85,13 +88,39 @@ cp .env.sample .env
 5. Running the App backend
 
 ```shell
-npm start
+pnpm start
 ```
 
 7. Running the App frontend
 
 ```shell
-npm run dev
+pnpm run dev
 ```
 
 The app will be default running on http://localhost:3000.
+
+### Project exercices graphql
+
+1. Clone the repository: 
+
+```shell
+git clone https://github.com/YohanGH/WCS-CDA.git
+```
+
+2. Navigate in folder exercices_graphql/graphql_discovery
+
+```shell
+cd exercices_graphql/graphql_discovery
+```
+
+3. Install dependencies:
+
+```shell
+pnpm install
+```
+
+4. Running the App
+
+```shell
+pnpm start
+```
