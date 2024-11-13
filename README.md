@@ -21,6 +21,9 @@ As part of my CDA training, I worked on various projects and exercises to improv
 |       └── ...
 |   └── exercises_typing_typescript
 │       └── practices
+|   └── exercices_graphql
+│       ├── graphql_discovery
+│       └── ...
 └── ...
 ```
 
@@ -30,7 +33,7 @@ Here are the technologies and programming languages mainly used during my work:
 
 - HTML / CSS
 - JavaScript / TypeScript 
-- Vite / React / Express
+- Vite / React / Express / Apollo server / GraphQL
 - SQL / SQLite / 
 - Node.js
 - Git / GitHub
@@ -50,6 +53,7 @@ Here are the technologies and programming languages mainly used during my work:
     - Introduce in connexion backend and frontend
     - Introduce in basic hooks react (useState, useEffect ...)
     - Introduce in Tailwind and Shadcn
+    - Introduce in GraphQL and Apollo server
 
 
 ## Getting Started
