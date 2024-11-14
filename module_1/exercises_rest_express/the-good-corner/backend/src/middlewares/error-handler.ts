@@ -1,50 +1,32 @@
-import { Request, Response, NextFunction } from "express";
-
 // Interface for Apperror structure
 interface IAppError {
-  status: number;
-  isOperational: Boolean;
+  statusCode: number;
   errorType?: string;
   additionalInfo?: string;
+  isOperational?: boolean;
 }
 
 // AppError class with proper TypeScript types
-class AppError extends Error implements IAppError {
-  status: number;
-  isOperational: boolean;
+export class AppError extends Error implements IAppError {
+  statusCode: number;
   errorType?: string;
   additionalInfo?: string;
+  isOperational: boolean;
 
   constructor(
     message: string,
-    status: number,
+    statusCode: number = 500,
     errorType?: string,
     additionalInfo?: string,
     isOperational: boolean = true
   ) {
-    super(message); // Call the Error constructor
-    Object.setPrototypeOf(this, new.target.prototype); // Fix inheritance for built-in Error class
+    super(message);
+    Object.setPrototypeOf(this, new.target.prototype);
 
-    this.status = status;
-    this.isOperational = isOperational;
+    this.statusCode = statusCode;
     this.errorType = errorType;
     this.additionalInfo = additionalInfo;
-    Error.captureStackTrace(this, this.constructor);
+    this.isOperational = isOperational;
+    Error.captureStackTrace(this);
   }
 }
-
-const errorHandler = (
-  err: AppError,
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const status = err.status || 500;
-  const message = err.message || "Internal Server Error";
-  const errorType = err.errorType || "Error";
-  const additionalInfo = err.additionalInfo || null;
-  res.status(status).json({ status, message, errorType, additionalInfo });
-};
-
-export { AppError };
-export default errorHandler;
