@@ -1,42 +1,79 @@
-import express from "express";
-import cors from "cors";
 import dotenv from "dotenv";
-import adRoutes from "./routes/ad-routes/ad-routes";
-import categoryRoutes from "./routes/category-routes/category-routes";
-import tagRoutes from "./routes/tag-routes/tag-routes";
-import errorHandler from "./middlewares/error-handler";
-import "reflect-metadata";
+import { buildSchema } from "type-graphql";
+import { ApolloServer } from "@apollo/server";
+import { startStandaloneServer } from "@apollo/server/standalone";
 import dataSource from "./database/config/datasource";
+import { CategoryResolver } from "./graphql/resolvers/category-resolver";
+import { TagResolver } from "./graphql/resolvers/tag-resolver";
+import { AdResolver } from "./graphql/resolvers/ad-resolver";
+import { AppError } from "./middlewares/error-handler";
+import { GraphQLFormattedError } from "graphql";
 
-dotenv.config();
-const app = express();
-const port = process.env.APP_PORT || 3310;
-const portFrontend = process.env.APP_PORT_FRONTEND || "http://localhost:5173";
+dotenv.config(); // Load environment variables from .env file
 
-app.use(express.json());
-app.use(cors({
-  origin: portFrontend,
-}));
-app.use("/ads", adRoutes);
-app.use("/category", categoryRoutes);
-app.use("/tag", tagRoutes);
-app.use(errorHandler);
-
-// Function to initialize the application
-async function initialize() {
+(async () => {
   try {
     // Initialize the data source (e.g., connect to a database)
     await dataSource.initialize();
 
-    // Start the server and listen on the specified port
-    app.listen(port, () => {
-      console.log(`App listening on port ${port}`);
+    // Create schema with resolvers
+    const schema = await buildSchema({
+      resolvers: [
+        CategoryResolver,
+        TagResolver,
+        AdResolver,
+        /*, other resolvers */
+      ],
+      validate: true, // Activate validation for input fields
     });
-  } catch (error) {
-    // Handle any initialization errors
-    console.error("Error during initialization:", error);
-  }
-}
 
-// Call the initialize function to start the application
-initialize();
+    //Create instance of ApolloServer with the schema
+    const server = new ApolloServer({
+      schema,
+      formatError: (
+        formattedError: GraphQLFormattedError,
+        error: unknown
+      ): GraphQLFormattedError => {
+        // Check if the error is an instance of AppError
+        if (error instanceof AppError) {
+          // Customize the format
+          return {
+            message: error.message,
+            extensions: {
+              code: error.errorType || "INTERNAL_SERVER_ERROR",
+              statusCode: error.statusCode,
+              additionalInfo: error.additionalInfo,
+            },
+          };
+        }
+
+        // Manage validation errors (class-validator)
+        if (Array.isArray((error as any).validationErrors)) {
+          return {
+            message: "Erreur de validation",
+            extensions: {
+              code: "BAD_USER_INPUT",
+              validationErrors: (error as any).validationErrors,
+            },
+          };
+        }
+
+        // For other errors, you can handle them differently
+        return formattedError;
+      },
+    });
+
+    // Start the server
+    const { url } = await startStandaloneServer(server, {
+      listen: { port: Number(process.env.APP_PORT) || 4000 },
+      context: async ({ req }) => {
+        // TODO:  Add properties to the context here, like the authenticated user
+        return {};
+      },
+    });
+
+    console.log(`🚀  Server ready at: ${url}`);
+  } catch (error) {
+    console.error("🚨 Error during initialization:", error);
+  }
+})();

@@ -1,37 +1,65 @@
 import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToMany, ManyToOne, PrimaryGeneratedColumn, JoinTable } from "typeorm";
+import { ObjectType, Field, ID } from 'type-graphql';
 import { Category } from "./category";
 import { Tag } from "./tag";
 
-@Entity({ name: 'ad'})
+// This class represents an Ad entity in the database.
+// It defines the structure of an ad, including its unique identifier (id),
+// the title, description, owner, price, picture, location, category, and tags.
+@ObjectType()
+@Entity({ name: 'ad' })
 export class Ad extends BaseEntity {
+    @Field(() => ID)
     @PrimaryGeneratedColumn()
-    id!: number;
+    id!: number; // Unique identifier for the ad
 
+    @Field()
     @Column({ length: 255 })
-    title!: string;
+    title!: string; // Title of the ad
 
-    @Column('text')
-    description!: string;
+    @Field({ nullable: true })
+    @Column('text', { nullable: true })
+    description?: string; // Description of the ad
 
+    @Field()
     @Column()
-    owner!: string;
+    owner!: string; // Owner of the ad
 
+    @Field()
     @Column("decimal", { precision: 10, scale: 2 })
-    price!: number;
+    price!: number; // Price of the ad
 
+    @Field()
     @Column({ length: 255 })
-    picture!: string;
+    picture!: string; // Picture of the ad
 
+    @Field()
     @Column({ length: 255 })
-    location!: string;
+    location!: string; // Location of the ad
 
-    @ManyToOne(() => Category, (category) => category.ads, { eager: true, onDelete: 'CASCADE'})
-    category!: Category;
+    @Field(() => Category) // Category of the ad
+    @ManyToOne(() => Category, (category) => category.ads, { eager: true, onDelete: 'CASCADE' }) // Many-to-one relationship with Category
+    category!: Category; // Category of the ad
 
-    @ManyToMany(() => Tag, (tag) => tag.ads, {onDelete: 'CASCADE'})
-        @JoinTable()
-    tags!: Tag[];
+    @Field(() => [Tag], { nullable: true }) // Tags associated with the ad
+    @ManyToMany(() => Tag, (tag) => tag.ads) // Many-to-many relationship with Tags
+    @JoinTable({ // Specifies the join table for the many-to-many relationship
+        joinColumns: [
+            {
+                name: 'adId',
+                referencedColumnName: 'id',
+            },
+        ],
+        inverseJoinColumns: [
+            {
+                name: 'tagId',
+                referencedColumnName: 'id',
+            },
+        ],
+    })
+    tags?: Tag[]; // Tags associated with the ad
 
+    @Field()
     @CreateDateColumn()
-    createdAt!: Date;
+    createdAt!: Date; // Creation date of the ad
 }
