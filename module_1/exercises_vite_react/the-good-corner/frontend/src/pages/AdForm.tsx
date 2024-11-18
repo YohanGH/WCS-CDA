@@ -1,91 +1,111 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import toast from "react-hot-toast";
-import { CategoryType, Tag } from "../types/types";
-import { useNavigate } from "react-router-dom";
+'use client'
 
-const apiUrl: string =
-  import.meta.env.VITE_APP_API_URL || "http://localhost:3000";
+import React, { useState } from "react"
+import toast from "react-hot-toast"
+import { CategoryType, Tag } from "../types/types"
+import { useNavigate } from "react-router-dom"
+import { useMutation, useQuery } from "@apollo/client"
+import { GET_CATEGORIES } from "@/graphql/categories"
+import { GET_TAGS } from "@/graphql/tags"
+import { CREATE_AD } from "@/graphql/ads"
+import { Loader2, AlertTriangle } from 'lucide-react'
 
 const AdForm: React.FC = () => {
-  const [title, setTitle] = useState<string>("");
-  const [owner, setOwner] = useState<string>("");
-  const [price, setPrice] = useState<number>();
-  const [description, setDescription] = useState<string>("");
-  const [location, setLocation] = useState<string>("");
-  const [category, setCategory] = useState<number>();
-  const [selectedTags, setSelectedTags] = useState<number[]>([]);
-  const [imageURL, setImageURL] = useState<string>("");
+  const [title, setTitle] = useState<string>("")
+  const [owner, setOwner] = useState<string>("")
+  const [price, setPrice] = useState<number>()
+  const [description, setDescription] = useState<string>("")
+  const [location, setLocation] = useState<string>("")
+  const [category, setCategory] = useState<number>()
+  const [selectedTags, setSelectedTags] = useState<number[]>([])
+  const [imageURL, setImageURL] = useState<string>("")
 
-  // State to store categories and tag
-  const [categories, setCategories] = useState<CategoryType[]>([]);
-  const [tags, setTags] = useState<Tag[]>([]);
-  const [loadingCategories, setLoadingCategories] = useState<boolean>(true);
-  const [loadingTags, setLoadingTags] = useState<boolean>(true);
+  const navigate = useNavigate()
+  const currentDate = new Date().toISOString()
 
-  const navigate = useNavigate();
-  const currentDate = new Date().toISOString();
+  const { data: categoriesData, loading: loadingCategories, error: categoriesError } = useQuery<{ categories: CategoryType[] }>(GET_CATEGORIES, {
+    fetchPolicy: "network-only"
+  })
+  const { data: tagsData, loading: loadingTags, error: tagsError } = useQuery<{ tags: Tag[] }>(GET_TAGS, {
+    fetchPolicy: "network-only"
+  })
 
-  // Recovery of existing categories and tags
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [categoriesResponse, tagsResponse] = await Promise.all([
-          axios.get<CategoryType[]>(`${apiUrl}/category`),
-          axios.get<Tag[]>(`${apiUrl}/tag`),
-        ]);
+  const [createAd, { loading: creatingAd }] = useMutation(CREATE_AD)
 
-        setCategories(categoriesResponse.data);
-        setTags(tagsResponse.data);
-      } catch (error) {
-        console.error("Erreur lors de la récupération des données", error);
-        toast.error("Erreur lors du chargement des données.");
-      } finally {
-        setLoadingCategories(false);
-        setLoadingTags(false);
-      }
-    };
+  const categories = categoriesData?.categories || []
+  const tags = tagsData?.tags || []
 
-    fetchData();
-  }, []);
+  if (categoriesError || tagsError) {
+    toast.error("Une erreur est survenue lors de la récupération des catégories ou des tags.", {
+      style: {
+        border: '1px solid #ff0000',
+        padding: '16px',
+        color: '#ff0000',
+        background: '#1a0505',
+      },
+      iconTheme: {
+        primary: '#ff0000',
+        secondary: '#1a0505',
+      },
+    })
+    console.error("Error retrieving categories", categoriesError)
+    console.error("Error retrieving tags", tagsError)
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen bg-[#1a0505] text-accent">
+        <AlertTriangle className="w-16 h-16 mb-4" />
+        <h3 className="text-2xl font-bold mb-2">Erreur système</h3>
+        <p className="text-center max-w-md">
+          Une erreur est survenue lors du chargement des données. Veuillez réessayer ultérieurement.
+        </p>
+      </div>
+    )
+  }
 
   const validateForm = () => {
     if (!title || !price || !description || !category || !imageURL) {
-      return "Tous les champs sont obligatoires.";
+      return "Tous les champs sont obligatoires."
     }
 
     if (!price || isNaN(price) || Number(price) <= 0) {
-      return "Le prix doit être un nombre valide supérieur à zéro.";
+      return "Le prix doit être un nombre valide supérieur à zéro."
     }
 
     if (!imageURL.startsWith("http") && !imageURL.startsWith("https")) {
-      return "L'URL de l'image doit être valide.";
+      return "L'URL de l'image doit être valide."
     }
 
-    return null;
-  };
+    return null
+  }
 
-  // Manage tag selection/deselection
   const handleTagToggle = (tagId: number) => {
     setSelectedTags(
       (prevTags) =>
         prevTags.includes(tagId)
-          ? prevTags.filter((id) => id !== tagId) // unselected
-          : [...prevTags, tagId] // selected
-    );
-  };
+          ? prevTags.filter((id) => id !== tagId)
+          : [...prevTags, tagId]
+    )
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
 
-    // Validate form data
-    const validationError = validateForm();
+    const validationError = validateForm()
     if (validationError) {
-      toast.error(validationError); // Displaying an error with react-hot-toast
-      return;
+      toast.error(validationError, {
+        style: {
+          border: '1px solid #ff0000',
+          padding: '16px',
+          color: '#ff0000',
+          background: '#1a0505',
+        },
+        iconTheme: {
+          primary: '#ff0000',
+          secondary: '#1a0505',
+        },
+      })
+      return
     }
 
-    // Prepare data for dispatch
     const adData = {
       title,
       owner,
@@ -96,215 +116,233 @@ const AdForm: React.FC = () => {
       tags: selectedTags.map((tagId) => ({ id: tagId })),
       picture: imageURL,
       createdAt: currentDate,
-    };
+    }
 
     try {
-      const response = await axios.post(`${apiUrl}/ads`, adData, {
-        headers: { "Content-Type": "application/json" },
-      });
-      if (response.status === 201) {
-        toast.success("Annonce créée avec succès !");
-        setTitle("");
-        setOwner("");
-        setPrice(undefined);
-        setDescription("");
-        setLocation("");
-        setCategory(undefined);
-        setSelectedTags([]);
-        setImageURL("");
+      const { data } = await createAd({
+        variables: { input: adData },
+      })
 
-        // Redirect after success
-        const createdAdId = response.data.id;
-        navigate(`ads/${createdAdId}`, { replace: true });
+      if (data?.status === 201) {
+        toast.success("Annonce créée avec succès !", {
+          style: {
+            border: '1px solid #00ff00',
+            padding: '16px',
+            color: '#00ff00',
+            background: '#1a0505',
+          },
+          iconTheme: {
+            primary: '#00ff00',
+            secondary: '#1a0505',
+          },
+        })
+        setTitle("")
+        setOwner("")
+        setPrice(undefined)
+        setDescription("")
+        setLocation("")
+        setCategory(undefined)
+        setSelectedTags([])
+        setImageURL("")
+
+        navigate(`/ads/${data.createdAdId}`, { replace: true })
       } else {
-        toast.error("Erreur lors de la création de l'annonce.");
+        toast.error("Erreur lors de la création de l'annonce.", {
+          style: {
+            border: '1px solid #ff0000',
+            padding: '16px',
+            color: '#ff0000',
+            background: '#1a0505',
+          },
+          iconTheme: {
+            primary: '#ff0000',
+            secondary: '#1a0505',
+          },
+        })
       }
     } catch (error) {
-      console.log(error);
-      toast.error("Une erreur est survenue. Veuillez réessayer.");
+      console.log(error)
+      toast.error("Une erreur est survenue. Veuillez réessayer.", {
+        style: {
+          border: '1px solid #ff0000',
+          padding: '16px',
+          color: '#ff0000',
+          background: '#1a0505',
+        },
+        iconTheme: {
+          primary: '#ff0000',
+          secondary: '#1a0505',
+        },
+      })
     }
-  };
+  }
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-gray-900 to-black text-neon-blue p-8">
-      <h1 className="text-4xl font-bold mb-8 text-center text-neon-pink glitch-text">
-        Créer une annonce
-      </h1>
-      <meta
-        name="description"
-        content="Créez une annonce sur notre plateforme pour vendre vos produits rapidement."
-      />
-      <meta name="robots" content="index, follow" />
+    <div className="min-h-screen text-red-400 p-8 relative overflow-hidden">
+      <div className="relative z-10">
+        <h1 className="text-4xl font-bold mb-8 text-center text-foreground tracking-wider animate-pulse">
+          CRÉER UNE ANNONCE
+        </h1>
+        <meta name="description" content="Publiez un produit ou service rapidement." />
+        <meta name="robots" content="index, follow" />
 
-      <form onSubmit={handleSubmit} className="max-w-2xl mx-auto space-y-6">
-        <div className="space-y-2">
-          <label htmlFor="title" className="block text-neon-green">
-            Titre de l'annonce
-          </label>
-          <input
-            type="text"
-            id="title"
-            name="title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-            maxLength={100}
-            placeholder="Entrez un titre descriptif"
-            className="w-full bg-gray-800 border border-neon-blue rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-neon-pink"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <label htmlFor="title" className="block text-neon-green">
-            Nom du vendeur
-          </label>
-          <input
-            type="text"
-            id="owner"
-            name="owner"
-            value={owner}
-            onChange={(e) => setOwner(e.target.value)}
-            required
-            maxLength={100}
-            placeholder="Entrez votre nom"
-            className="w-full bg-gray-800 border border-neon-blue rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-neon-pink"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <label htmlFor="price" className="block text-neon-green">
-            Prix (€)
-          </label>
-          <input
-            type="text"
-            id="price"
-            name="price"
-            value={price}
-            onChange={(e) => setPrice(Number(e.target.value))}
-            required
-            placeholder="Entrez le prix"
-            className="w-full bg-gray-800 border border-neon-blue rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-neon-pink"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <label htmlFor="description" className="block text-neon-green">
-            Description
-          </label>
-          <textarea
-            id="description"
-            name="description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            required
-            rows={4}
-            maxLength={500}
-            placeholder="Entrez une description détaillée"
-            className="w-full bg-gray-800 border border-neon-blue rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-neon-pink"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <label htmlFor="location" className="block text-neon-green">
-            Localisation
-          </label>
-          <input
-            id="location"
-            name="location"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            required
-            maxLength={500}
-            placeholder="Entrez une localisation"
-            className="w-full bg-gray-800 border border-neon-blue rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-neon-pink"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <label htmlFor="category" className="block text-neon-green">
-            Catégorie
-          </label>
-          {loadingCategories ? (
-            <p>Chargement des catégories...</p>
-          ) : (
-            <select
-              id="category"
-              name="category"
-              value={category}
-              onChange={(e) => setCategory(Number(e.target.value))}
+        <form onSubmit={handleSubmit} className="max-w-2xl mx-auto space-y-6">
+          <FormField label="Titre de l'annonce" id="title">
+            <input
+              type="text"
+              id="title"
+              name="title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
               required
-              className="w-full bg-gray-800 border border-neon-blue rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-neon-pink"
-            >
-              <option value="">Sélectionnez une catégorie</option>
-              {categories.length > 0 ? (
-                categories.map((category) => (
+              maxLength={100}
+              placeholder="Entrez un titre descriptif"
+              className="w-full bg-input border border-border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent text-foreground placeholder-accent-foreground"
+            />
+          </FormField>
+
+          <FormField label="Nom du vendeur" id="owner">
+            <input
+              type="text"
+              id="owner"
+              name="owner"
+              value={owner}
+              onChange={(e) => setOwner(e.target.value)}
+              required
+              maxLength={100}
+              placeholder="Entrez votre nom"
+              className="w-full bg-input border border-border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent text-foreground placeholder-accent-foreground"
+            />
+          </FormField>
+
+          <FormField label="Prix (€)" id="price">
+            <input
+              type="number"
+              id="price"
+              name="price"
+              value={price}
+              onChange={(e) => setPrice(Number(e.target.value))}
+              required
+              placeholder="Entrez le prix"
+              className="w-full bg-input border border-border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent text-foreground placeholder-accent-foreground"
+            />
+          </FormField>
+
+          <FormField label="Description" id="description">
+            <textarea
+              id="description"
+              name="description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              required
+              rows={4}
+              maxLength={500}
+              placeholder="Entrez une description détaillée"
+              className="w-full bg-input border border-border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent text-foreground placeholder-accent-foreground"
+            />
+          </FormField>
+
+          <FormField label="Localisation" id="location">
+            <input
+              id="location"
+              name="location"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+              required
+              maxLength={500}
+              placeholder="Entrez une localisation"
+              className="w-full bg-input border border-border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent text-foreground placeholder-accent-foreground"
+            />
+          </FormField>
+
+          <FormField label="Catégorie" id="category">
+            {loadingCategories ? (
+              <div className="flex items-center justify-center">
+                <Loader2 className="w-6 h-6 text-accent animate-spin" />
+              </div>
+            ) : (
+              <select
+                id="category"
+                name="category"
+                value={category}
+                onChange={(e) => setCategory(Number(e.target.value))}
+                required
+                className="w-full bg-input border border-border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent text-foreground"
+              >
+                <option value="">Sélectionnez une catégorie</option>
+                {categories.map((category) => (
                   <option key={category.id} value={category.id}>
                     {category.title}
                   </option>
-                ))
-              ) : (
-                <p>Aucune catégorie disponible</p>
-              )}
-            </select>
-          )}
-        </div>
+                ))}
+              </select>
+            )}
+          </FormField>
 
-        <div className="space-y-2">
-          <label htmlFor="tags" className="block text-neon-green">
-            Tags
-          </label>
-          {loadingTags ? (
-            <p>Chargement des tags...</p>
-          ) : (
-            <div className="space-y-2">
+          <FormField label="Tags" id="tags">
+            {loadingTags ? (
+              <div className="flex items-center justify-center">
+                <Loader2 className="w-6 h-6 text-accent animate-spin" />
+              </div>
+            ) : (
               <div className="grid grid-cols-2 gap-2">
                 {tags.map((tag) => (
-                  <label key={tag.id} className="grid grid-cols-2 gap-2">
+                  <label key={tag.id} className="flex items-center space-x-2">
                     <input
                       type="checkbox"
                       id={`tag-${tag.id}`}
                       value={tag.id}
                       checked={selectedTags.includes(tag.id)}
                       onChange={() => handleTagToggle(tag.id)}
-                      className="form-checkbox text-neon-pink"
+                      className="form-checkbox text-accent border-border bg-input"
                     />
-                    <label
-                      htmlFor={`tag-${tag.id}`}
-                      className="flex items-center space-x-2"
-                    >
-                      {tag.title}
-                    </label>
+                    <span className="text-red-400">{tag.title}</span>
                   </label>
                 ))}
               </div>
-            </div>
-          )}
-        </div>
+            )}
+          </FormField>
 
-        <div className="space-y-2">
-          <label htmlFor="picture" className="block text-neon-green">
-            URL de l'image
-          </label>
-          <input
-            type="url"
-            id="imageURL"
-            name="imageURL"
-            onChange={(e) => setImageURL(e.target.value)}
-            required
-            placeholder="Entre l'URL de l'image"
-            className="w-full bg-gray-800 border border-neon-blue rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-neon-pink"
-          />
-        </div>
+          <FormField label="URL de l'image" id="imageURL">
+            <input
+              type="url"
+              id="imageURL"
+              name="imageURL"
+              value={imageURL}
+              onChange={(e) => setImageURL(e.target.value)}
+              required
+              placeholder="Entrez l'URL de l'image"
+              className="w-full bg-input border border-border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent text-foreground placeholder-accent-foreground"
+            />
+          </FormField>
 
-        <button
-          type="submit"
-          className="w-full bg-neon-pink text-black font-bold py-2 px-4 rounded hover:bg-neon-blue transition duration-300 ease-in-out transform hover:scale-105"
-        >
-          Créer l'annonce
-        </button>
-      </form>
+          <button
+            type="submit"
+            disabled={creatingAd}
+            className="w-full bg-primary-foreground text-foreground font-bold py-2 px-4 rounded hover:bg-primary transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-opacity-50"
+          >
+            {creatingAd ? (
+              <div className="flex items-center justify-center">
+                <Loader2 className="w-6 h-6 mr-2 animate-spin" />
+                Création en cours...
+              </div>
+            ) : (
+              "Créer l'annonce"
+            )}
+          </button>
+        </form>
+      </div>
     </div>
-  );
-};
+  )
+}
 
-export default AdForm;
+const FormField: React.FC<{ label: string; id: string; children: React.ReactNode }> = ({ label, id, children }) => (
+  <div className="space-y-2">
+    <label htmlFor={id} className="block text-foreground font-semibold">
+      {label}
+    </label>
+    {children}
+  </div>
+)
+
+export default AdForm
