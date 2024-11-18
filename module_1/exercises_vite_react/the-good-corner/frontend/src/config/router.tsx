@@ -9,6 +9,7 @@ import ErrorElement from "@/components/ErrorElement.tsx";
 const Home = lazy(() => import("../pages/Home.tsx"));
 const Ad = lazy(() => import("../pages/Ad.tsx"));
 const AdForm = lazy(() => import("../pages/AdForm.tsx"));
+const Categories = lazy(() => import("../pages/Categories.tsx"));
 const Category = lazy(() => import("../pages/Category.tsx"));
 // Test error
 const ErrorTest = lazy(() => import("../test/ui/ErrorTest.tsx"));
@@ -44,10 +45,10 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/category",
+        path: "/categories",
         element: (
           <Suspense fallback={<CyberpunkLoader />}>
-            <Category />
+            <Categories />
           </Suspense>
         ),
       },
