@@ -4,48 +4,47 @@
 
 @layer base {
   :root {
-    --background: #ffffff;
-    --foreground: #0a0a0a;
+    --background: #000000; /* Black background */
+    --foreground: #EAEAEA; /* Light text for contrast */
+    
+    --muted: #333333; /* Gray for secondary elements */
+    --muted-foreground: #737373; /* Light gray for secondary texts */
 
-    --muted: #f5f5f5;
-    --muted-foreground: #737373;
+    --popover: #111111; /* Dark background for popovers */
+    --popover-foreground: #EAEAEA; /* Light text in popovers */
 
-    --popover: #ffffff;
-    --popover-foreground: #0a0a0a;
+    --border: #FF0000; /* Red borders */
+    --input: #333333; /* Dark gray input backgrounds */
 
-    --border: #e5e5e5;
-    --input: #e5e5e5;
+    --card: #111111; /* Dark background for cards */
+    --card-foreground: #EAEAEA; /* Light text for cards */
 
-    --card: #ffffff;
-    --card-foreground: #0a0a0a;
+    --primary: #FF0000; /* Bright red for primary elements */
+    --primary-foreground: #EAEAEA; /* Light text on red background */
 
-    --primary: #1a202c;
-    --primary-foreground: #fafafa;
+    --secondary: #333333; /* Dark gray for secondary elements */
+    --secondary-foreground: #EAEAEA; /* Light text for secondary elements */
 
-    --secondary: #bdbdbd;
-    --secondary-foreground: #171717;
+    --accent: #FF0000; /* Bright red accent */
+    --accent-foreground: #EAEAEA; /* Light text on accents */
 
-    --accent: #3182ce;
-    --accent-foreground: #171717;
+    --destructive: #FF3131; /* Neon red for destructive alerts */
+    --destructive-foreground: #0A0A0A; /* Dark text on destructive alerts */
 
-    --destructive: #e53e3e;
-    --destructive-foreground: #fafafa;
+    /* Neon colors */
+    --neon-red: #FF0000;
+    --neon-blue: #4DEEEA;
+    --neon-green: #39FF14;
+    --neon-purple: #B829E3;
 
-    /* Neon */
-    --neon-purple: #b829e3;
-    --neon-green: #39ff14;
-    --neon-blue: #4deeea;
-    --neon-red: #ff3131;
+    --ring: #FF0000; /* Bright red for visual focus */
+    --radius: 0.5rem; /* Slight border curvature */
 
-    --ring: #0a0a0a;
-
-  --radius: 0.5rem;
-
-  --chart-1: #e4572e;
-  --chart-2: #1fbfa5;
-  --chart-3: #48768e;
-  --chart-4: #e3b04b;
-  --chart-5: #f8b26a;
+    --chart-1: #FF3131;
+    --chart-2: #1FBFA5;
+    --chart-3: #48768E;
+    --chart-4: #E3B04B;
+    --chart-5: #F8B26A;
 
     .text-neon-green {
       color: var(--neon-green);
@@ -67,6 +66,17 @@
     }
     .border-neon-purple {
       border-color: var(--neon-purple);
+    }
+
+    /* Adding glow effects for futuristic style */
+    .glow-red {
+      text-shadow: 0 0 5px var(--neon-red), 0 0 10px var(--neon-red), 0 0 20px var(--neon-red);
+    }
+    .glow-blue {
+      text-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue);
+    }
+    .glow-green {
+      text-shadow: 0 0 5px var(--neon-green), 0 0 10px var(--neon-green), 0 0 20px var(--neon-green);
     }
   }
 
