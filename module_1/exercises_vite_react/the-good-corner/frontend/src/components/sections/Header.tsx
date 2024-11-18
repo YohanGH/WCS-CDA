@@ -1,6 +1,6 @@
 import React from "react";
-import Navigation from "./Navigation";
-import Hero from "./Hero";
+import MainNavigation from "./MainNavigation";
+import CategoriesNavigation from "./CategoriesNavigation";
 
 const Header: React.FC = () => {
   return (
@@ -10,8 +10,8 @@ const Header: React.FC = () => {
         className="bg-primary text-secondary"
       >
         <div>
-          <Navigation />
-          <Hero />
+          <MainNavigation />
+          <CategoriesNavigation />
         </div>
       </header>
     </>
