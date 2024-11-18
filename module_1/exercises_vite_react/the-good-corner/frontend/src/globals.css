@@ -13,19 +13,19 @@
     --popover: #111111; /* Dark background for popovers */
     --popover-foreground: #EAEAEA; /* Light text in popovers */
 
-    --border: #FF0000; /* Red borders */
+    --border: #a80828; /* Red borders */
     --input: #333333; /* Dark gray input backgrounds */
 
-    --card: #111111; /* Dark background for cards */
+    --card: #181818; /* Dark background for cards */
     --card-foreground: #EAEAEA; /* Light text for cards */
 
-    --primary: #FF0000; /* Bright red for primary elements */
-    --primary-foreground: #EAEAEA; /* Light text on red background */
+    --primary: #ff003a; /* Bright red for primary elements */
+    --primary-foreground: #380818; /* Light text on red background */
 
     --secondary: #333333; /* Dark gray for secondary elements */
     --secondary-foreground: #EAEAEA; /* Light text for secondary elements */
 
-    --accent: #FF0000; /* Bright red accent */
+    --accent: #f80838; /* Bright red accent */
     --accent-foreground: #EAEAEA; /* Light text on accents */
 
     --destructive: #FF3131; /* Neon red for destructive alerts */
