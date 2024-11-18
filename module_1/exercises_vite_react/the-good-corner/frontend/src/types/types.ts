@@ -46,7 +46,7 @@ export type SearchFormProps = {
 }
 
 export type AdListProps = {
-  categoryId?: string;
+  categoryId?: number;
 }
 
 export type DarkModeContextProps = {
