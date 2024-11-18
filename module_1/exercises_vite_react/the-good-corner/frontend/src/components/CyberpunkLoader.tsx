@@ -1,18 +1,26 @@
-export default function CyberpunkLoader() {
+import React from 'react'
+
+const Loader: React.FC = () => {
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-background z-50">
+    <div className="flex items-center justify-center min-h-screen bg-background">
       <div className="relative">
-        <div className="w-40 h-40 border-4 border-neon-purple border-t-transparent rounded-full animate-spin"></div>
-        <div className="absolute top-0 left-0 w-40 h-40 border-4 border-neon-green border-b-transparent rounded-full animate-spin animation-delay-500"></div>
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-28 h-28 bg-card rounded-lg transform rotate-45 flex items-center justify-center overflow-hidden">
-            <span className="text-neon-blue font-bold text-xl tracking-wider animate-pulse transform -rotate-45">
-              LOAD
-              <span className="animate-glitch">ING</span>
-            </span>
-          </div>
-        </div>
+        {/* Outer ring */}
+        <div className="w-16 h-16 border-4 border-border rounded-full animate-spin"></div>
+        
+        {/* Inner ring */}
+        <div className="absolute top-1 left-1 w-14 h-14 border-4 border-accent rounded-full animate-spin-reverse"></div>
+        
+        {/* Center dot */}
+        <div className="absolute top-[18px] left-[18px] w-8 h-8 bg-red-500 rounded-full animate-pulse"></div>
+        
+        {/* Glowing effect */}
+        <div className="absolute -inset-1 bg-destructive opacity-30 blur-md animate-pulse"></div>
       </div>
+      
+      {/* Loading text */}
+      <p className="ml-4 text-foreground text-lg font-bold tracking-wider animate-pulse">CHARGEMENT...</p>
     </div>
-  );
+  )
 }
+
+export default Loader
