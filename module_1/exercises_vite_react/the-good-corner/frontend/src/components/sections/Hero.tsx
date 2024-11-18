@@ -1,27 +1,19 @@
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
-
 const Hero: React.FC = () => {
   return (
-    <>
-      <section className="py-20 px-6 bg-primary bg-center">
-        <div className="container mx-auto text-center">
-          <h1 className="text-5xl font-bold mb-8 text-neon-purple animate-pulse">
-            Bienvenue dans le futur du commerce
-          </h1>
-          <div className="max-w-2xl mx-auto flex">
-            <Input
-              type="search"
-              placeholder="Rechercher dans le cyberespace..."
-              className="flex-grow bg-card border-neon-purple text-foreground placeholder-muted-foreground"
-            />
-            <Button className="ml-2 bg-neon-blue hover:bg-neon-green text-foreground">
-              Rechercher
-            </Button>
-          </div>
-        </div>
-      </section>
-    </>
+    <section className="flex items-center justify-center min-h-screen bg-background">
+      {/* Content Container */}
+      <div className="relative border-2 border-border bg-background/40 backdrop-blur-sm p-8">
+        {/* Angular Border Frame */}
+        <div className="absolute top-0 left-0 w-8 h-8 border-l-4 border-t-4 border-border -translate-x-1 -translate-y-1" />
+        <div className="absolute top-0 right-0 w-8 h-8 border-r-4 border-t-4 border-border translate-x-1 -translate-y-1" />
+        <div className="absolute bottom-0 left-0 w-8 h-8 border-l-4 border-b-4 border-border -translate-x-1 translate-y-1" />
+        <div className="absolute bottom-0 right-0 w-8 h-8 border-r-4 border-b-4 border-border translate-x-1 translate-y-1" />
+
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-center text-foreground animate-pulse tracking-wider">
+          Bienvenue dans le futur du commerce
+        </h1>
+      </div>
+    </section>
   );
 };
 
