@@ -79,55 +79,6 @@
       text-shadow: 0 0 5px var(--neon-green), 0 0 10px var(--neon-green), 0 0 20px var(--neon-green);
     }
   }
-
-  .dark {
-    --background: #0a0a0a;
-    --foreground: #fafafa;
-  
-    --muted: #262626;
-    --muted-foreground: #a1a1a1;
-  
-    --accent: #262626;
-    --accent-foreground: #fafafa;
-  
-    --popover: #0a0a0a;
-    --popover-foreground: #fafafa;
-  
-    --border: #262626;
-    --input: #262626;
-  
-    --card: #0a0a0a;
-    --card-foreground: #fafafa;
-  
-    --primary: #fafafa;
-    --primary-foreground: #171717;
-  
-    --secondary: #262626;
-    --secondary-foreground: #fafafa;
-  
-    --destructive: #b71a1a;
-    --destructive-foreground: #fafafa;
-  
-    --ring: #d4d4d4;
-  
-    --radius: 0.5rem;
-  
-    --chart-1: #3366cc;
-    --chart-2: #2c9c73;
-    --chart-3: #e69532;
-    --chart-4: #b366cc;
-    --chart-5: #e63973;
-  }
-}
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-    font-feature-settings: "rlig" 1, "calt" 1;
-  }
 }
 
 @layer components {
