@@ -1,8 +1,12 @@
 import React from "react";
-import RecentAds from "../components/sections/RecentAds";
+import Hero from "@/components/sections/Hero";
 
 const Home: React.FC = () => {
-  return <RecentAds />;
+  return (
+    <>
+      <Hero />
+    </>
+  );
 };
 
 export default Home;
