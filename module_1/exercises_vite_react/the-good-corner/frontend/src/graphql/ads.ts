@@ -38,9 +38,11 @@ export const GET_AD = gql`
       createdAt
       category {
         id
+        title
       }
       tags {
         id
+        title
       }
     }
   }

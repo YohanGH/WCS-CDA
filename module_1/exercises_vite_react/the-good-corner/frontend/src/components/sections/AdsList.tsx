@@ -4,7 +4,8 @@ import { AdListProps, AdType } from "../../types/types";
 import { useQuery } from "@apollo/client";
 import toast from "react-hot-toast";
 import { GET_ADS, GET_TOTAL_ADS } from "@/graphql/ads";
-import { Loader2, AlertTriangle } from "lucide-react";
+import { AlertTriangle } from "lucide-react";
+import Loading from "@/components/ui/loading";
 
 const Pagination: React.FC<{
   currentPage: number;
@@ -66,17 +67,7 @@ const AdList: React.FC<AdListProps> = ({ categoryId }) => {
     setPage((prevPage) => Math.max(prevPage - 1, 1));
 
   if (adsLoading || totalLoading) {
-    return (
-      <div className="flex justify-center items-center min-h-[300px]">
-        <div className="relative border-2 border-border bg-background/40 p-8">
-          <div className="absolute top-0 left-0 w-4 h-4 border-l-2 border-t-2 border-border -translate-x-1 -translate-y-1" />
-          <div className="absolute top-0 right-0 w-4 h-4 border-r-2 border-t-2 border-border translate-x-1 -translate-y-1" />
-          <div className="absolute bottom-0 left-0 w-4 h-4 border-l-2 border-b-2 border-border -translate-x-1 translate-y-1" />
-          <div className="absolute bottom-0 right-0 w-4 h-4 border-r-2 border-b-2 border-border translate-x-1 translate-y-1" />
-          <Loader2 className="w-12 h-12 text-foreground animate-spin" />
-        </div>
-      </div>
-    );
+    return <Loading />;
   }
 
   if (adsError || totalError) {

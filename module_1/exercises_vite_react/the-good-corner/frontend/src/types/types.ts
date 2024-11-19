@@ -7,8 +7,8 @@ export type AdType = {
   picture: string;
   location: string;
   createdAt: string;
-  category: { id: number };
-  tags?: { id: number }[];
+  category: CategoryType;
+  tags?: Tag[];
 };
 
 export type CategoryType = {
