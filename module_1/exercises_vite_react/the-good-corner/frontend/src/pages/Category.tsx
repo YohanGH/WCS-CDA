@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import AdList from "../components/sections/RecentAds";
+import AdList from "../components/sections/AdsList";
 
 const Category: React.FC = () => {
   const { id } = useParams<{ id: string}>();
@@ -8,7 +8,7 @@ const Category: React.FC = () => {
   return (
     <div>
       <div>
-        <AdList categoryId={id}/>
+        <AdList categoryId={parseInt(id || "0", 10)}/>
       </div>
     </div>
   );

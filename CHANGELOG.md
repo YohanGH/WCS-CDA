@@ -1,4 +1,6 @@
 # CHANGELOG
+
+- Part 11 Update the good corner: change backend express with graphql ==> { commit: 015da2bfced59d5d8e31902ee6c381bd6b854f4e }
 - Part 10 backend build with graphql ==> { commit: e87a8b9e4770f841329c1581f20f60d08f36a34f }
 - Refacto Refacto frontend tailwind shadcn ==> { commit: eaa682e4afa9a6fe47e2d268bbe1f8281491345d }
 - Part 9 frontend build context with tailwind and shadcn ==> { commit: 688245336c30ecfe87d80e44735eb2138aaa1074 }

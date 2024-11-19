@@ -4,12 +4,16 @@ import { Toaster } from "react-hot-toast";
 import Router from "./config/router.tsx";
 import "./globals.css";
 import { GlobalProvider } from "./contexts/GlobalContextProvider.tsx";
+import { ApolloProvider } from "@apollo/client";
+import { client } from "./config/client.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <GlobalProvider>
+    <ApolloProvider client={client}>
+      <GlobalProvider>
         <Router />
         <Toaster position="bottom-right" />
-    </GlobalProvider>
+      </GlobalProvider>
+    </ApolloProvider>
   </StrictMode>
 );

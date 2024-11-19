@@ -1,0 +1,41 @@
+/* App.module.css */
+.mainContent {
+    position: relative;
+    min-height: 100vh;
+    overflow-y: auto;
+    background: var(--background);
+    color: var(--foreground);
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+  
+  .mobileBackground {
+    position: absolute;
+    inset: 0;
+    background-repeat: no-repeat;
+    z-index: 1;
+    transform: rotate(180deg);
+  }
+  
+  .desktopBackground {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-repeat: no-repeat;
+    z-index: 1;
+    transform: rotate(180deg);
+  }
+  
+  .dotPatternOverlay {
+    position: absolute;
+    inset: 0;
+    opacity: 0.15;
+    background-image: radial-gradient(circle at 1px 1px, #ff0000 1px, transparent 0);
+    background-size: 24px 24px;
+  }
+  
+  .contentWrapper {
+    position: relative;
+    z-index: 10;
+  }
+  
