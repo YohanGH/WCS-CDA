@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 export const GET_ADS = gql`
-  query GetAds($categoryId: Int) {
-    ads(categoryId: $categoryId) {
+  query GetAds($categoryId: Int, $limit: Int, $offset: Int) {
+    ads(categoryId: $categoryId, limit: $limit, offset: $offset) {
       id
       title
       price
@@ -19,8 +19,14 @@ export const GET_ADS = gql`
   }
 `;
 
+export const GET_TOTAL_ADS = gql`
+  query GetTotalAds($categoryId: Int) {
+    totalAds(categoryId: $categoryId)
+  }
+`;
+
 export const GET_AD = gql`
-  query GetAd($id: ID!) {
+  query GetAd($id: Int!) {
     ad(id: $id) {
       id
       title

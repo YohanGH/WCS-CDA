@@ -13,8 +13,8 @@ export type Ad = {
 
 export type Category = {
   title: string;
-}
+};
 
 export type Tag = {
   title: string;
-}
+};

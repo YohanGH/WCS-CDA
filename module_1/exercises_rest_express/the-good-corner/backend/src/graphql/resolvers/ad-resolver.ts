@@ -11,24 +11,48 @@ import { generateRandomAd } from "../../utils/generate-ad";
 
 @Resolver(Ad)
 export class AdResolver {
-  // Get all ads
-  @Query(() => [Ad]) // Query to get all ads
+  // Get all ads BY CATEGORY
+  @Query(() => [Ad]) // Change to return an array of Ad
   async ads(
-    @Arg("categoryId", () => Int, { nullable: true }) categoryId?: number
+    @Arg("categoryId", () => Int, { nullable: true }) categoryId?: number,
+    @Arg("limit", () => Int, { nullable: true }) limit?: number,
+    @Arg("offset", () => Int, { nullable: true }) offset?: number,
   ): Promise<Ad[]> {
     const adRepository = dataSource.getRepository(Ad); // Get the ad repository
-    const whereClause = categoryId ? { category: { id: categoryId } } : {};
-    const ads = await adRepository.find({
+
+    const whereClause = categoryId ? { category: { id: categoryId } } : {}; // If categoryId is provided, filter ads by categoryId
+
+    return await adRepository.find({
       where: whereClause,
+      take: limit,
+      skip: offset,
       relations: ["category", "tags"],
     }); // Find all ads with their category and tags
-
-    return ads;
   }
+
+  // Get total ads
+  @Query(() => Int)
+async totalAds(
+  @Arg("categoryId", () => Int, { nullable: true }) categoryId?: number,
+): Promise<number> {
+  const adRepository = dataSource.getRepository(Ad);
+
+  const whereClause = categoryId ? { category: { id: categoryId } } : {};
+
+  const total = await adRepository.count({
+    where: whereClause,
+  });
+
+  return total;
+}
 
   // Get ad by id
   @Query(() => Ad) // Query to get an ad by its id
   async ad(@Arg("id", () => Int) id: number): Promise<Ad> {
+    if (id <= 0) {
+      throw new AppError("Invalid ID provided", 400);
+    }
+
     // Get an ad by its id
     const adRepository = dataSource.getRepository(Ad);
     const ad = await adRepository.findOne({
