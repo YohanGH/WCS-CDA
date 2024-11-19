@@ -1,5 +1,6 @@
 # CHANGELOG
 
+- Part 12 Update the good corner: Add graphql and apollo client in front end ==> { commit: 291134934338a9c510d0295448dfc37787d58345 }
 - Part 11 Update the good corner: change backend express with graphql ==> { commit: 015da2bfced59d5d8e31902ee6c381bd6b854f4e }
 - Part 10 backend build with graphql ==> { commit: e87a8b9e4770f841329c1581f20f60d08f36a34f }
 - Refacto Refacto frontend tailwind shadcn ==> { commit: eaa682e4afa9a6fe47e2d268bbe1f8281491345d }
