@@ -94,6 +94,10 @@ async totalAds(
 
     const ad = adRepository.create({
       // Create an ad
+      owner: data.owner,
+      price: data.price,
+      picture: data.picture,
+      location: data.location,
       title: data.title,
       description: data.description,
       category,

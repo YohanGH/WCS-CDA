@@ -40,7 +40,6 @@ export class CreateAdInput {
   location!: string; // The location of the ad
 
   @Field(() => Int)
-  @IsNotEmpty()
   @IsInt({ message: "The category id must be an integer" })
   @Min(1, { message: "The category id must be greater than or equal to 1" })
   categoryId!: number; // The category id of the ad
@@ -48,6 +47,6 @@ export class CreateAdInput {
   @Field(() => [Int])
   @IsArray({ message: 'Les IDs des tags doivent être un tableau' })
   @ArrayNotEmpty({ message: 'Le tableau des IDs des tags ne doit pas être vide' })
-  @IsInt({ message: "The tag ids must be an array of integers" })
+  @IsInt({ message: "The tag ids must be an array of integers", each: true })
   tagIds?: number[]; // The tag ids of the ad
 }

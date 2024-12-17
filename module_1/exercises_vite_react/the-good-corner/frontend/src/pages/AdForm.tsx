@@ -21,7 +21,6 @@ const AdForm: React.FC = () => {
   const [imageURL, setImageURL] = useState<string>("")
 
   const navigate = useNavigate()
-  const currentDate = new Date().toISOString()
 
   const { data: categoriesData, loading: loadingCategories, error: categoriesError } = useQuery<{ categories: CategoryType[] }>(GET_CATEGORIES, {
     fetchPolicy: "network-only"
@@ -112,15 +111,14 @@ const AdForm: React.FC = () => {
       price,
       description,
       location,
-      category: { id: category },
-      tags: selectedTags.map((tagId) => ({ id: tagId })),
+      categoryId: category,
+      tagIds: selectedTags.map((tagId) => Number(tagId)),
       picture: imageURL,
-      createdAt: currentDate,
     }
 
     try {
       const { data } = await createAd({
-        variables: { input: adData },
+        variables: { data: adData },
       })
 
       if (data?.status === 201) {
