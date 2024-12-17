@@ -24,6 +24,9 @@ As part of my CDA training, I worked on various projects and exercises to improv
 |   └── exercices_graphql
 │       ├── graphql_discovery
 │       └── ...
+|   └── exercices_docker
+|       ├── quest-1726-docker-express
+|       └── ...
 └── ...
 ```
 
@@ -37,6 +40,7 @@ Here are the technologies and programming languages mainly used during my work:
 - SQL / SQLite / 
 - Node.js
 - Git / GitHub
+- Docker
 - Tailwind / Shadcn
 
 ## Exercices
@@ -54,10 +58,9 @@ Here are the technologies and programming languages mainly used during my work:
     - Introduce in basic hooks react (useState, useEffect ...)
     - Introduce in Tailwind and Shadcn
     - Introduce in GraphQL and Apollo server
-
+    - Introduce in Docker
 
 ## Getting Started
-
 
 ### project exercices frontend and backend
 
