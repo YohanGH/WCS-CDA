@@ -49,24 +49,26 @@ export const GET_AD = gql`
 `;
 
 export const CREATE_AD = gql`
-  mutation CreateAd($ad: AdInput!) {
-    createAd(ad: $ad) {
-      id
-      title
-      description
-      owner
-      price
-      picture
-      location
-      createdAt
-    }
+mutation CreateAd($data: CreateAdInput!) {
+  createAd(data: $data) {
+    id
+    title
+    description
+    owner
+    price
+    picture
+    location
+    createdAt
     category {
       id
+      title
     }
     tags {
       id
+      title
     }
   }
+}
 `;
 
 export const DELETE_AD = gql`
