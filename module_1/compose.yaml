@@ -1,0 +1,24 @@
+services:
+  frontend:
+    build:
+      context: ./exercises_vite_react/the-good-corner/frontend
+      dockerfile: Dockerfile
+    ports:
+      - 5173:5173
+    env_file:
+      - ./exercises_vite_react/the-good-corner/frontend/.env
+    volumes:
+      - ./exercises_vite_react/the-good-corner/frontend:/app
+      - /app/node_modules
+
+  backend:
+    build:
+      context: ./exercises_rest_express/the-good-corner/backend
+      dockerfile: Dockerfile
+    ports:
+      - 3310:3310
+    env_file:
+      - ./exercises_rest_express/the-good-corner/backend/.env
+    volumes:
+      - ./exercises_rest_express/the-good-corner/backend:/app
+      - /app/node_modules
