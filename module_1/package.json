@@ -3,15 +3,11 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently \"npm run frontend\" \"npm run backend\"",
     "frontend": "cd exercises_vite_react/the-good-corner/frontend && npm run dev",
     "backend": "cd exercises_rest_express/the-good-corner/backend && npm start",
     "depcheck": "npx depcheck"
   },
   "author": "",
   "license": "ISC",
-  "description": "",
-  "devDependencies": {
-    "concurrently": "^9.0.1"
-  }
+  "description": ""
 }

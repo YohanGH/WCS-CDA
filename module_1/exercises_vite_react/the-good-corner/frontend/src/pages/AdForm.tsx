@@ -39,7 +39,7 @@ const AdForm: React.FC = () => {
       style: {
         border: '1px solid #ff0000',
         padding: '16px',
-        color: '#ff0000',
+        color: '#eaeaea',
         background: '#1a0505',
       },
       iconTheme: {
@@ -50,7 +50,7 @@ const AdForm: React.FC = () => {
     console.error("Error retrieving categories", categoriesError)
     console.error("Error retrieving tags", tagsError)
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-[#1a0505] text-accent">
+      <div className="flex flex-col items-center justify-center min-h-screen text-accent">
         <AlertTriangle className="w-16 h-16 mb-4" />
         <h3 className="text-2xl font-bold mb-2">Erreur système</h3>
         <p className="text-center max-w-md">
