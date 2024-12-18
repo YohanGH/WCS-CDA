@@ -20,6 +20,7 @@
     "dotenv": "^16.4.5",
     "faker": "^6.6.6",
     "graphql": "^16.9.0",
+    "pg": "^8.13.1",
     "reflect-metadata": "^0.2.2",
     "sqlite3": "^5.1.7",
     "ts-node-dev": "^2.0.0",

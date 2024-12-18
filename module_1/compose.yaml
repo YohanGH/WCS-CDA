@@ -1,24 +1,81 @@
+version: '3.9' # Version de syntaxe Docker Compose
+
 services:
+  # Frontend service (React + Vite)
   frontend:
     build:
-      context: ./exercises_vite_react/the-good-corner/frontend
-      dockerfile: Dockerfile
+      context: ./exercises_vite_react/the-good-corner/frontend # Répertoire où se trouve le Dockerfile
+      dockerfile: Dockerfile # Nom du fichier Dockerfile à utiliser
     ports:
-      - 5173:5173
+      - "5173:5173" # Expose le port 5173 pour accéder à Vite depuis l'hôte
+    environment:
+      - CHOKIDAR_USEPOLLING=true # Active le hot-reload sur Docker Desktop (Windows/macOS)
     env_file:
-      - ./exercises_vite_react/the-good-corner/frontend/.env
+      - ./exercises_vite_react/the-good-corner/frontend/.env # Charge les variables d'environnement depuis un fichier
     volumes:
-      - ./exercises_vite_react/the-good-corner/frontend:/app
-      - /app/node_modules
+      - ./exercises_vite_react/the-good-corner/frontend/index.html:/app/index.html
+      - ./exercises_vite_react/the-good-corner/frontend/src:/app/src
+      - ./exercises_vite_react/the-good-corner/frontend/public:/app/public
+      - ./exercises_vite_react/the-good-corner/frontend/vite.config.ts:/app/vite.config.ts
+    command: ["pnpm", "run", "dev", "--host"] # Lancer le mode développement de Vite (hot reload activé)
 
+    # Options non utilisées, mais utiles dans d'autres cas
+    # restart: always # Recrée le conteneur en cas de plantage
+    # depends_on:
+    #   - backend # Attend que le backend soit prêt (utile si nécessaire)
+    # networks:
+    #   - app_network # À configurer si un réseau spécifique est requis
+
+  # Backend service (Express.js)
   backend:
     build:
-      context: ./exercises_rest_express/the-good-corner/backend
-      dockerfile: Dockerfile
+      context: ./exercises_rest_express/the-good-corner/backend # Répertoire où se trouve le Dockerfile
+      dockerfile: Dockerfile # Nom du fichier Dockerfile à utiliser
     ports:
-      - 3310:3310
+      - "3310:3310" # Expose le port 3310 pour accéder au backend depuis l'hôte
+    environment:
+      - CHOKIDAR_USEPOLLING=true # Active le hot-reload sur Docker Desktop (Windows/macOS)
+      - DB_HOST=db
     env_file:
-      - ./exercises_rest_express/the-good-corner/backend/.env
+      - ./exercises_rest_express/the-good-corner/backend/.env # Charge les variables d'environnement depuis un fichier
     volumes:
-      - ./exercises_rest_express/the-good-corner/backend:/app
-      - /app/node_modules
+      - ./exercises_rest_express/the-good-corner/backend/src:/app/src
+    command: ["pnpm", "start"] # Lancer le serveur Express.js (hot reload activé avec nodemon si configuré)
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - app_network
+
+    # Options non utilisées, mais utiles dans d'autres cas
+    # restart: always # Recrée le conteneur en cas de plantage
+
+  db:
+    image: postgres:15
+    restart: always # Recrée le conteneur en cas de plantage
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=the_good_corner
+      - POSTGRES_USER=the_good_corner
+      - POSTGRES_PASSWORD=the_good_corner_password
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - app_network
+    healthcheck: #  Pour s'assurer que PostgreSQL est prêt avant de démarrer le backend.
+      test: ["CMD-SHELL", "pg_isready -U the_good_corner -d the_good_corner -h localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+# Réseaux (désactivés ici, mais utiles pour isoler les services)
+networks:
+  app_network:
+    driver: bridge
+
+# Volumes (pour persister des données comme les bases de données)
+volumes:
+  db_data: # Volume pour la base de données
+    driver: local
