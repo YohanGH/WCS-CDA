@@ -31,8 +31,8 @@ const CategoriesPage: React.FC = () => {
     return (
       <div className="min-h-screen flex justify-center items-center">
         <div className="text-border text-center">
-          <p className="text-2xl">ERROR://</p>
-          <p className="text-lg">Erreur lors du chargement des catégories.</p>
+          <p className="text-2xl text-accent">ERROR://</p>
+          <p className="text-lg text-accent">Erreur lors du chargement des catégories.</p>
         </div>
       </div>
     )
