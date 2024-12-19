@@ -70,7 +70,7 @@ services:
       retries: 5
       start_period: 5s
 
-# Réseaux (désactivés ici, mais utiles pour isoler les services)
+# Réseaux (utiles pour isoler les services)
 networks:
   app_network:
     driver: bridge
