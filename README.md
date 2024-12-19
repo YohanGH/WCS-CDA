@@ -59,6 +59,7 @@ Here are the technologies and programming languages mainly used during my work:
     - Introduce in Tailwind and Shadcn
     - Introduce in GraphQL and Apollo server
     - Introduce in Docker
+    - Introduce in Docker compose and microservice
 
 ## Getting Started
 

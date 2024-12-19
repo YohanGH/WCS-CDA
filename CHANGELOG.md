@@ -1,5 +1,6 @@
 # CHANGELOG
 
+- Part 14 Add docjer in app the good corner ==> { commit: f1b1222a7a05b0412908150e5f94d343701064e8}
 - Part 13 Add docker compose file to run client and server ==> { commit: ac000f2c742c968ff5d197cf088183c48ceb61b9 }
 - Part 12 Update the good corner: Add graphql and apollo client in front end ==> { commit: 291134934338a9c510d0295448dfc37787d58345 }
 - Part 11 Update the good corner: change backend express with graphql ==> { commit: 015da2bfced59d5d8e31902ee6c381bd6b854f4e }
