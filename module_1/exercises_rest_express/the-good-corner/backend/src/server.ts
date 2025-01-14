@@ -6,6 +6,7 @@ import dataSource from "./database/config/datasource";
 import { CategoryResolver } from "./graphql/resolvers/category-resolver";
 import { TagResolver } from "./graphql/resolvers/tag-resolver";
 import { AdResolver } from "./graphql/resolvers/ad-resolver";
+import { AuthResolver } from "./graphql/resolvers/auth-resolver";
 import { AppError } from "./middlewares/error-handler";
 import { GraphQLFormattedError } from "graphql";
 
@@ -19,6 +20,7 @@ dotenv.config(); // Load environment variables from .env file
     // Create schema with resolvers
     const schema = await buildSchema({
       resolvers: [
+        AuthResolver,
         CategoryResolver,
         TagResolver,
         AdResolver,
