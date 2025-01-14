@@ -18,6 +18,6 @@ COPY tsconfig.json nodemon.json ./
 COPY src ./src
 
 # Expose port
-EXPOSE 5050
+EXPOSE 3310
 
 CMD ["pnpm", "start"]
