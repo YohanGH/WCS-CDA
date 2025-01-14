@@ -3,6 +3,7 @@ import dataSource from "../database/config/datasource";
 import * as argon2 from "argon2";
 import jwt from "jsonwebtoken";
 import { AppError } from "../middlewares/error-handler";
+import Cookies from "cookies";
 
 export class AuthService {
     // Method to register a new user
@@ -28,7 +29,7 @@ export class AuthService {
     }
 
     // Method to log in an existing user
-    async login(email: string, password: string): Promise<string> {
+    async login(email: string, password: string, cookies: Cookies): Promise<string> {
         const userRepository = dataSource.getRepository(User);
         // Find the user by email
         const user = await userRepository.findOne({ where: { email } });
@@ -51,6 +52,16 @@ export class AuthService {
         const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET!, {
             expiresIn: "1d", // Token expiration time
         });
+
+        // Set the token as a cookie in the response
+        cookies.set("token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+            signed: true,
+        });
+
+
         return token; // Return the generated token
     }
 }

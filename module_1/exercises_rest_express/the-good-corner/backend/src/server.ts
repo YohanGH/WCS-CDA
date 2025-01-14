@@ -9,8 +9,19 @@ import { AdResolver } from "./graphql/resolvers/ad-resolver";
 import { AuthResolver } from "./graphql/resolvers/auth-resolver";
 import { AppError } from "./middlewares/error-handler";
 import { GraphQLFormattedError } from "graphql";
+import Cookies from "cookies";
 
 dotenv.config(); // Load environment variables from .env file
+
+// Check that COOKIE_SECRET is defined
+if (!process.env.COOKIE_SECRET) {
+  throw new Error("COOKIE_SECRET is not defined in environment variables.");
+}
+
+// Check that APP_PORT is defined
+if (!process.env.APP_PORT) {
+  throw new Error("APP_PORT is not defined in environment variables.");
+}
 
 (async () => {
   try {
@@ -68,9 +79,10 @@ dotenv.config(); // Load environment variables from .env file
     // Start the server
     const { url } = await startStandaloneServer(server, {
       listen: { port: Number(process.env.APP_PORT) || 4000 },
-      context: async ({ req }) => {
-        // TODO:  Add properties to the context here, like the authenticated user
-        return {};
+      context: async ({ req, res }) => {
+        // Properties to the context here, like the authenticated user
+        const cookies = new Cookies(req, res, { keys: [process.env.COOKIE_SECRET || "default-secret"] });
+        return { req, res, cookies };
       },
     });
 

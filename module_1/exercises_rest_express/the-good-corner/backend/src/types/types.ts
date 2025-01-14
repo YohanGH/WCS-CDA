@@ -1,3 +1,5 @@
+import Cookies from "cookies";
+
 export type Ad = {
   id: number;
   title: string;
@@ -17,4 +19,10 @@ export type Category = {
 
 export type Tag = {
   title: string;
+};
+
+export type Context = {
+  req: Request;
+  res: Response;
+  cookies: Cookies;
 };
