@@ -61,7 +61,6 @@ export class AuthService {
             signed: true,
         });
 
-
         return token; // Return the generated token
     }
 }

@@ -39,6 +39,7 @@ export class AuthResolver {
             // Get the cookies from the context
             const { cookies } = context;
 
+            // Check if the cookies are available
             if (!cookies) {
                 throw new AppError('Cookies context not available', 500, 'InternalServerError');
             }
