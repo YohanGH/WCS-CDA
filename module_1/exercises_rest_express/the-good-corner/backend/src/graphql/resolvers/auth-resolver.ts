@@ -17,11 +17,16 @@ export class AuthResolver {
     // Mutation for user registration
     @Mutation(() => User)
     async register(
-        @Arg('data') data: CreateUserInput // Input object containing email and password
+        @Arg('data') data: CreateUserInput, // Input object containing email and password
+        @Ctx() context: Context // Context object containing cookies
     ): Promise<User> {
         try {
             const { email, password } = data;
-            return await this.authService.register(email, password); // Call register method from AuthService
+
+            // Get the cookies from the context
+            const { cookies } = context;
+
+            return await this.authService.register(email, password, cookies); // Call register method from AuthService
         } catch (error) {
             throw new AppError('Registration failed', 400, 'ValidationError'); // Handle registration errors
         }

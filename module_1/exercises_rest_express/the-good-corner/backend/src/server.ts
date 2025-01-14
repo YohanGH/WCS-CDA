@@ -82,7 +82,8 @@ if (!process.env.APP_PORT) {
       context: async ({ req, res }) => {
         // Properties to the context here, like the authenticated user
         const cookies = new Cookies(req, res, { keys: [process.env.COOKIE_SECRET || "default-secret"] });
-        return { req, res, cookies };
+
+        return { cookies };
       },
     });
 
