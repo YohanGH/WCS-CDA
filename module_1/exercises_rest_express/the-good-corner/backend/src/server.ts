@@ -10,6 +10,7 @@ import { AuthResolver } from "./graphql/resolvers/auth-resolver";
 import { AppError } from "./middlewares/error-handler";
 import { GraphQLFormattedError } from "graphql";
 import Cookies from "cookies";
+import { customAuthChecker } from "./middlewares/auth-checker";
 
 dotenv.config(); // Load environment variables from .env file
 
@@ -38,6 +39,7 @@ if (!process.env.APP_PORT) {
         /*, other resolvers */
       ],
       validate: true, // Activate validation for input fields
+      authChecker: customAuthChecker,
     });
 
     //Create instance of ApolloServer with the schema

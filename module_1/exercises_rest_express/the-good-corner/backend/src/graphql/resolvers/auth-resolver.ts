@@ -8,12 +8,6 @@ import { Context } from '../../types/types';
 // Define the AuthResolver class for handling authentication-related GraphQL mutations
 @Resolver(User)
 export class AuthResolver {
-    private readonly authService: AuthService; // Instance of AuthService for handling authentication logic
-
-    constructor() {
-        this.authService = new AuthService(); // Initialize AuthService
-    }
-
     // Mutation for user registration
     @Mutation(() => User)
     async register(
@@ -26,7 +20,7 @@ export class AuthResolver {
             // Get the cookies from the context
             const { cookies } = context;
 
-            return await this.authService.register(email, password, cookies); // Call register method from AuthService
+            return await AuthService.register(email, password, cookies); // Call register method from AuthService
         } catch (error) {
             throw new AppError('Registration failed', 400, 'ValidationError'); // Handle registration errors
         }
@@ -49,7 +43,7 @@ export class AuthResolver {
                 throw new AppError('Cookies context not available', 500, 'InternalServerError');
             }
 
-            return await this.authService.login(email, password, cookies); // Call login method from AuthService
+            return await AuthService.login(email, password, cookies); // Call login method from AuthService
         } catch (error) {
             throw new AppError('Login failed', 401, 'UnauthorizedError'); // Handle login errors
         }

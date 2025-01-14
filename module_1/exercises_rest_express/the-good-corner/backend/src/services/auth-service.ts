@@ -7,7 +7,7 @@ import Cookies from "cookies";
 
 export class AuthService {
     // Method to register a new user
-    async register(email: string, password: string, cookies: Cookies): Promise<User> {
+    static async register(email: string, password: string, cookies: Cookies): Promise<User> {
         const userRepository = dataSource.getRepository(User);
 
         // Verification to ensure no existing token is present
@@ -34,7 +34,7 @@ export class AuthService {
     }
 
     // Method to log in an existing user
-    async login(email: string, password: string, cookies: Cookies): Promise<string> {
+    static async login(email: string, password: string, cookies: Cookies): Promise<string> {
         const userRepository = dataSource.getRepository(User);
         // Find the user by email
         const user = await userRepository.findOne({ where: { email } });
@@ -67,5 +67,26 @@ export class AuthService {
         });
 
         return token; // Return the generated token
+    }
+
+    // Method to check if a user is authorized
+    static async checker(cookies: Cookies): Promise<boolean> {
+        const token = cookies.get("token", { signed: true });
+
+        if (!token) {
+            throw new AppError("No token provided", 401, "UnauthorizedError");
+        }
+
+        try {
+            // Decode and verify the token
+            jwt.verify(token, process.env.JWT_SECRET!);
+
+            // Get associate user
+            // Attach
+
+            return true; // Token is valid
+        } catch (error) {
+            throw new AppError("Invalid token", 401, "UnauthorizedError");
+        }
     }
 }

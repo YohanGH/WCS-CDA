@@ -1,4 +1,5 @@
 import Cookies from "cookies";
+import { AuthService } from "../services/auth-service";
 
 export type Ad = {
   id: number;
@@ -22,7 +23,5 @@ export type Tag = {
 };
 
 export type Context = {
-  req: Request;
-  res: Response;
   cookies: Cookies;
 };

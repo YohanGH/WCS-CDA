@@ -1,4 +1,4 @@
-import { Resolver, Query, Arg, Int, Mutation } from "type-graphql";
+import { Resolver, Query, Arg, Int, Mutation, Authorized } from "type-graphql";
 import { Tag } from "../../database/entities/tag";
 import { AppError } from "../../middlewares/error-handler";
 import { CreateTagInput } from "../inputs/create/create-tag-input";
@@ -9,6 +9,7 @@ import dataSource from '../../database/config/datasource';
 @Resolver(Tag)
 export class TagResolver {
     // Get all tags
+    @Authorized()
     @Query(() => [Tag])
     async tags(): Promise<Tag[]> {
         const tagRepository = dataSource.getRepository(Tag); // Get the tag repository
@@ -18,6 +19,7 @@ export class TagResolver {
     }
 
     // Get a tag by ID
+    @Authorized()
     @Query(() => Tag)
     async tag(@Arg('id', () => Int) id: number): Promise<Tag> {
         const tagRepository = dataSource.getRepository(Tag); // Get the tag repository
@@ -30,6 +32,7 @@ export class TagResolver {
     }
 
     // Create a new tag
+    @Authorized()
     @Mutation(() => Tag)
     async createTag(@Arg('data') data: CreateTagInput): Promise<Tag> {
         const tagRepository = dataSource.getRepository(Tag); // Get the tag repository
@@ -46,6 +49,7 @@ export class TagResolver {
     }
 
     // Create a random tag
+    @Authorized()
     @Mutation(() => Tag)
     async generateRandomTag(): Promise<Tag> {
         const tagRepository = dataSource.getRepository(Tag); // Get the tag repository
@@ -55,6 +59,7 @@ export class TagResolver {
     }
 
     // Update a tag partially (PATCH)
+    @Authorized()
     @Mutation(() => Tag)
     async updateTag(
         @Arg('id', () => Int) id: number, // The id of the tag to update
@@ -73,6 +78,7 @@ export class TagResolver {
     }
 
     // Delete a tag
+    @Authorized()
     @Mutation(() => Boolean)
     async deleteTag(@Arg('id', () => Int) id: number): Promise<boolean> {
         const tagRepository = dataSource.getRepository(Tag); // Get the tag repository
