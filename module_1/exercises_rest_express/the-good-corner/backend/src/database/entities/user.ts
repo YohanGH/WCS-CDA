@@ -1,6 +1,10 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { ObjectType, Field, ID } from 'type-graphql';
+import { Tag } from "./tag";
 
+// This class represents a user entity in the database.
+// It defines the structure of a user, including its unique identifier (id),
+// the user's email address, and the user's hashed password.
 @ObjectType()
 @Entity({ name: 'user' }) // The name of the table in the database
 export class User extends BaseEntity {

@@ -69,8 +69,8 @@ export class AuthService {
         return token; // Return the generated token
     }
 
-    // Method to check if a user is authorized
-    static async checker(cookies: Cookies): Promise<boolean> {
+    // Method to retrieve the currently logged-in user
+    static async whoami(cookies: Cookies): Promise<User | null> {
         const token = cookies.get("token", { signed: true });
 
         if (!token) {
@@ -78,13 +78,18 @@ export class AuthService {
         }
 
         try {
-            // Decode and verify the token
-            jwt.verify(token, process.env.JWT_SECRET!);
+            const payload = jwt.verify(token, process.env.JWT_SECRET!) as { id: number };
 
-            // Get associate user
-            // Attach
+            // Find the user by id
+            const userRepository = dataSource.getRepository(User);
+            const user = await userRepository.findOne({ where: { id: payload.id } });
 
-            return true; // Token is valid
+            // Return null if user is not found instead of throwing an error
+            if (!user) {
+                return null; // User not found, return null
+            }
+
+            return user;
         } catch (error) {
             throw new AppError("Invalid token", 401, "UnauthorizedError");
         }

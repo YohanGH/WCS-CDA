@@ -1,6 +1,6 @@
-import { Resolver, Mutation, Arg, Ctx } from 'type-graphql';
+import { Resolver, Mutation, Arg, Ctx, Query, Authorized } from 'type-graphql';
 import { AuthService } from '../../services/auth-service';
-import { CreateUserInput } from '../inputs/create/create-user-input';
+import { CreateUserInput } from '../inputs/create/create-auth-input';
 import { User } from '../../database/entities/user';
 import { AppError } from '../../middlewares/error-handler';
 import { Context } from '../../types/types';
@@ -57,5 +57,16 @@ export class AuthResolver {
         cookies.set('token', '', { maxAge: -1 });
 
         return 'Logged out successfully';
+    }
+
+    @Query(() => User)
+    async whoami(@Ctx() context: Context): Promise<User> {
+        const { cookies } = context;
+
+        const user = await AuthService.whoami(cookies);
+
+        if (!user) throw new AppError('User not found', 404, 'NotFoundError');
+
+        return user;
     }
 }

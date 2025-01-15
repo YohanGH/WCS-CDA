@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Arg, Int } from "type-graphql";
+import { Resolver, Query, Mutation, Arg, Int, Authorized } from "type-graphql";
 import { Ad } from "../../database/entities/ad";
 import { Category } from "../../database/entities/category";
 import { Tag } from "../../database/entities/tag";
@@ -68,6 +68,7 @@ async totalAds(
   }
 
   // Create ad
+  @Authorized()
   @Mutation(() => Ad) // Mutation to create an ad
   async createAd(@Arg("data") data: CreateAdInput): Promise<Ad> {
     // Create an ad
@@ -108,6 +109,7 @@ async totalAds(
   }
 
   // Create a random ad
+  @Authorized()
   @Mutation(() => Ad) // Mutation to create a random ad
   async generateRandomAd(): Promise<Ad> {
     // Generate a random ad
@@ -118,6 +120,7 @@ async totalAds(
   }
 
   // Update ad
+  @Authorized()
   @Mutation(() => Ad) // Mutation to update an ad
   async updateAd(
     @Arg("id", () => Int) id: number, // Get an ad by its id
@@ -168,6 +171,7 @@ async totalAds(
   }
 
   // Delete ad
+  @Authorized()
   @Mutation(() => Boolean) // Mutation to delete an ad
   async deleteAd(@Arg("id", () => Int) id: number): Promise<boolean> {
     // Delete an ad

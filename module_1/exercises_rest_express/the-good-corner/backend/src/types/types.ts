@@ -1,5 +1,5 @@
 import Cookies from "cookies";
-import { AuthService } from "../services/auth-service";
+import { User } from "../database/entities/user";
 
 export type Ad = {
   id: number;
@@ -24,4 +24,9 @@ export type Tag = {
 
 export type Context = {
   cookies: Cookies;
+  user: User | null | undefined;
+};
+
+export type AuthContext = {
+    user: User;
 };
