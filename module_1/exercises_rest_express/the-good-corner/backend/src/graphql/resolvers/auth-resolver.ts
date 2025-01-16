@@ -49,6 +49,7 @@ export class AuthResolver {
         }
     }
 
+    // Mutation for user logout
     @Mutation(() => String)
     async logout(@Ctx() context: Context): Promise<string> {
         const { cookies } = context;

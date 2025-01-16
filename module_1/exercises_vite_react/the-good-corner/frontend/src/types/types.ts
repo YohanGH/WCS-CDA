@@ -37,6 +37,7 @@ export type CardProps = {
 export interface GlobalContextProps {
   cartTotal: number;
   onAddToCart: (price: number) => void;
+  isAuthenticated: boolean;
 }
 
 export type SearchFormProps = {
@@ -59,3 +60,15 @@ export type CategoryWithAds = {
   title: string;
   ads: AdType[];
 };
+
+export type User = {
+  id: string
+  email: string
+}
+
+export type AuthContextProps = {
+  user: User | null;
+  isLoading: boolean;
+  refetchUser: () => void;
+  logout: () => void;
+}

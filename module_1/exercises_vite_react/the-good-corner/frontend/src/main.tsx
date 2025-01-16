@@ -6,13 +6,16 @@ import "./globals.css";
 import { GlobalProvider } from "./contexts/GlobalContextProvider.tsx";
 import { ApolloProvider } from "@apollo/client";
 import { client } from "./config/client.tsx";
+import { AuthProvider } from "./contexts/AuthContextProvider.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ApolloProvider client={client}>
       <GlobalProvider>
-        <Router />
-        <Toaster position="bottom-right" />
+        <AuthProvider>
+          <Router />
+          <Toaster position="bottom-right" />
+        </AuthProvider>
       </GlobalProvider>
     </ApolloProvider>
   </StrictMode>
