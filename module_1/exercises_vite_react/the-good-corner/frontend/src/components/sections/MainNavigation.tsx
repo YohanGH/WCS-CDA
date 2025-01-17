@@ -41,6 +41,7 @@ const MainNavigation: React.FC = () => {
             <NavLink to="/">Accueil</NavLink>
             <NavLink to="/categories">Catégories</NavLink>
             <NavLink to="/post-ad">Publier</NavLink>
+            {user && <NavLink to="/admin-dashboard">Admin</NavLink>}
             {user ? (
               <button onClick={handleLogout} className="relative overflow-hidden group inline-block text-foreground hover:text-primary transition-colors duration-300">
                 Déconnexion
@@ -58,6 +59,7 @@ const MainNavigation: React.FC = () => {
             <NavLink to="/" mobile>Accueil</NavLink>
             <NavLink to="/categories" mobile>Catégories</NavLink>
             <NavLink to="/post-ad" mobile>Publier</NavLink>
+            {user && <NavLink to="/admin-dashboard" mobile>Admin</NavLink>}
             {user ? (
               <button onClick={handleLogout} className="relative overflow-hidden group inline-block text-foreground hover:text-primary transition-colors duration-300">
                 Déconnexion

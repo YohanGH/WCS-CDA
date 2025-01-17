@@ -5,6 +5,7 @@ import NotFound from "@/pages/NotFound.tsx";
 import CyberpunkLoader from "@/components/CyberpunkLoader.tsx";
 import ErrorElement from "@/components/ErrorElement.tsx";
 import ProtectedRoute from "@/components/hoc/ProtectedRoute";
+import AdminDashboard from "@/pages/Admin";
 
 // Using lazy loading for pages
 const Home = lazy(() => import("@/pages/Home.tsx"));
@@ -62,6 +63,14 @@ const router = createBrowserRouter([
           <Suspense fallback={<CyberpunkLoader />}>
             <Category />
           </Suspense>
+        ),
+      },
+      {
+        path: "/admin-dashboard",
+        element: (
+          <ProtectedRoute>
+            <AdminDashboard />
+          </ProtectedRoute>
         ),
       },
       {
