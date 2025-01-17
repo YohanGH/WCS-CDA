@@ -44,6 +44,11 @@ export class CategoryResolver {
             throw new AppError("User must be authenticated to create a category", 401, "UnauthorizedError");
         }
 
+        // Check if the user is an admin
+        if (user.role !== "admin") {
+            throw new AppError("You are not authorized to create a category", 403, "ForbiddenError");
+        }
+
         const categoryRepository = dataSource.getRepository(Category); // Get the category repository
 
         // Check if a category with the same title already exists
@@ -87,6 +92,11 @@ export class CategoryResolver {
             throw new AppError("User must be authenticated to update a category", 401, "UnauthorizedError");
         }
 
+        // Check if the user is an admin
+        if (user.role !== "admin") {
+            throw new AppError("You are not authorized to update a category", 403, "ForbiddenError");
+        }
+
         const categoryRepository = dataSource.getRepository(Category); // Get the category repository
         const category = await categoryRepository.findOne({ where: { id }, relations: ['ads', 'createdBy'] }); // Find the category with its ads
 
@@ -115,6 +125,11 @@ export class CategoryResolver {
         // Check if the user is authenticated
         if (!user) {
             throw new AppError("User must be authenticated to delete a category", 401, "UnauthorizedError");
+        }
+
+        // Check if the user is an admin
+        if (user.role !== "admin") {
+            throw new AppError("You are not authorized to delete a category", 403, "ForbiddenError");
         }
 
         const categoryRepository = dataSource.getRepository(Category); // Get the category repository

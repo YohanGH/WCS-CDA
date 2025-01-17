@@ -1,6 +1,5 @@
-import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 import { ObjectType, Field, ID } from 'type-graphql';
-import { Tag } from "./tag";
 
 // This class represents a user entity in the database.
 // It defines the structure of a user, including its unique identifier (id),
@@ -18,6 +17,10 @@ export class User extends BaseEntity {
 
     @Column({ length: 255 })
     password!: string; // User's hashed password (not exposed via GraphQL)
+
+    @Column({ enum: ["user", "admin"], default: "user" })
+    @Field()
+    role!: string; // "user" | "admin"
 
     @Field()
     @Column({ default: () => 'CURRENT_TIMESTAMP' })

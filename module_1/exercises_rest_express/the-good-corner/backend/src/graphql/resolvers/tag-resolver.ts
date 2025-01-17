@@ -44,6 +44,11 @@ export class TagResolver {
             throw new AppError("User must be authenticated to create a tag", 401, "UnauthorizedError");
         }
 
+        // Check if the user is an admin
+        if (user.role !== "admin") {
+            throw new AppError("You are not authorized to create a tag", 403, "ForbiddenError");
+        }
+
         const tagRepository = dataSource.getRepository(Tag); // Get the tag repository
 
         // Check if a tag with the same title already exists
@@ -85,6 +90,11 @@ export class TagResolver {
             throw new AppError("User must be authenticated to update a tag", 401, "UnauthorizedError");
         }
 
+        // Check if the user is an admin
+        if (user.role !== "admin") {
+            throw new AppError("You are not authorized to update a tag", 403, "ForbiddenError");
+        }
+
         const tagRepository = dataSource.getRepository(Tag); // Get the tag repository
 
         const tag = await tagRepository.findOne({ where: { id }, relations: ['ads', 'createdBy'] }); // Find a tag by its id with its ads
@@ -110,6 +120,11 @@ export class TagResolver {
         // Check if the user is authenticated
         if (!user) {
             throw new AppError("User must be authenticated to delete a tag", 401, "UnauthorizedError");
+        }
+
+        // Check if the user is an admin
+        if (user.role !== "admin") {
+            throw new AppError("You are not authorized to delete a tag", 403, "ForbiddenError");
         }
 
         const tagRepository = dataSource.getRepository(Tag); // Get the tag repository
