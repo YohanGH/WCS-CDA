@@ -15,6 +15,7 @@ import { AdminHeader } from "@/components/sections/AdminHeader"
 import { DeleteDialog } from "@/components/sections/DeleteDialog"
 import { EditDialog } from "@/components/sections/EditDialog"
 import { StatsCards } from "@/components/sections/StatsCards"
+import CyberpunkLoader from "@/components/CyberpunkLoader"
 
 export default function AdminDashboard() {
     const [newItemName, setNewItemName] = useState("")
@@ -173,7 +174,7 @@ export default function AdminDashboard() {
                         {/* Categories Management */}
                         <TabsContent value="categories">
                             {categoriesLoading ? (
-                                <div>Loading...</div>
+                                <CyberpunkLoader />
                             ) : (
                                 <Card className="bg-black border-red-900/20">
                                     <CardHeader className="flex flex-row items-center justify-between">
@@ -243,7 +244,7 @@ export default function AdminDashboard() {
                         {/* Tags Management */}
                         <TabsContent value="tags">
                             {tagsLoading ? (
-                                <div>Loading...</div>
+                                <CyberpunkLoader />
                             ) : (
                                 <Card className="bg-black border-red-900/20">
                                     <CardHeader className="flex flex-row items-center justify-between">
