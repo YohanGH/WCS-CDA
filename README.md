@@ -36,12 +36,13 @@ Here are the technologies and programming languages mainly used during my work:
 
 - HTML / CSS
 - JavaScript / TypeScript 
-- Vite / React / Express / Apollo server / GraphQL
+- Vite / React / Express / Apollo server / GraphQL / TypeGraphQL
 - SQL / SQLite / 
 - Node.js
 - Git / GitHub
 - Docker
 - Tailwind / Shadcn
+- Argon2 / JWT / Cookies
 
 ## Exercices
 
@@ -60,6 +61,7 @@ Here are the technologies and programming languages mainly used during my work:
     - Introduce in GraphQL and Apollo server
     - Introduce in Docker
     - Introduce in Docker compose and microservice
+    - Introduce in Authentication and Cookies
 
 ## Getting Started
 
@@ -128,3 +130,25 @@ pnpm install
 ```shell
 pnpm start
 ```
+
+### Project run with docker
+
+1. Clone the repository: 
+
+```shell
+git clone https://github.com/YohanGH/WCS-CDA.git
+```
+
+2. Navigate in folder Module_1
+
+```shell
+cd module_1
+```
+
+3. Running the App
+
+```shell
+docker compose up --build
+```
+
+The app will be default running on backend : http://localhost:3310 and frontend : http://localhost:5173 and database : http://localhost:5432.

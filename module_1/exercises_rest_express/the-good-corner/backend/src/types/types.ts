@@ -1,3 +1,6 @@
+import Cookies from "cookies";
+import { User } from "../database/entities/user";
+
 export type Ad = {
   id: number;
   title: string;
@@ -17,4 +20,13 @@ export type Category = {
 
 export type Tag = {
   title: string;
+};
+
+export type Context = {
+  cookies: Cookies;
+  user: User | null | undefined;
+};
+
+export type AuthContext = {
+    user: User;
 };

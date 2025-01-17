@@ -1,4 +1,4 @@
-version: '3.9' # Version de syntaxe Docker Compose
+version: "3.9" # Version de syntaxe Docker Compose
 
 services:
   # Frontend service (React + Vite)
@@ -10,8 +10,6 @@ services:
       - "5173:5173" # Expose le port 5173 pour accéder à Vite depuis l'hôte
     environment:
       - CHOKIDAR_USEPOLLING=true # Active le hot-reload sur Docker Desktop (Windows/macOS)
-    env_file:
-      - ./exercises_vite_react/the-good-corner/frontend/.env # Charge les variables d'environnement depuis un fichier
     volumes:
       - ./exercises_vite_react/the-good-corner/frontend/index.html:/app/index.html
       - ./exercises_vite_react/the-good-corner/frontend/src:/app/src
@@ -23,8 +21,8 @@ services:
     # restart: always # Recrée le conteneur en cas de plantage
     # depends_on:
     #   - backend # Attend que le backend soit prêt (utile si nécessaire)
-    # networks:
-    #   - app_network # À configurer si un réseau spécifique est requis
+    networks:
+      - front_network # À configurer si un réseau spécifique est requis
 
   # Backend service (Express.js)
   backend:
@@ -45,6 +43,7 @@ services:
       db:
         condition: service_healthy
     networks:
+      - front_network
       - app_network
 
     # Options non utilisées, mais utiles dans d'autres cas
@@ -64,7 +63,11 @@ services:
     networks:
       - app_network
     healthcheck: #  Pour s'assurer que PostgreSQL est prêt avant de démarrer le backend.
-      test: ["CMD-SHELL", "pg_isready -U the_good_corner -d the_good_corner -h localhost"]
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U the_good_corner -d the_good_corner -h localhost",
+        ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -73,6 +76,8 @@ services:
 # Réseaux (utiles pour isoler les services)
 networks:
   app_network:
+    driver: bridge
+  front_network:
     driver: bridge
 
 # Volumes (pour persister des données comme les bases de données)

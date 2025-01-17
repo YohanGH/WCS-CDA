@@ -2,6 +2,7 @@ import { BaseEntity, Column, CreateDateColumn, Entity, ManyToMany, ManyToOne, Pr
 import { ObjectType, Field, ID } from 'type-graphql';
 import { Category } from "./category";
 import { Tag } from "./tag";
+import { User } from "./user";
 
 // This class represents an Ad entity in the database.
 // It defines the structure of an ad, including its unique identifier (id),
@@ -62,4 +63,8 @@ export class Ad extends BaseEntity {
     @Field()
     @CreateDateColumn()
     createdAt!: Date; // Creation date of the ad
+
+    @ManyToOne(() => User)
+    @Field(() => User)
+    createdBy!: User;
 }

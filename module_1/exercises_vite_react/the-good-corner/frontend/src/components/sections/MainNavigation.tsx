@@ -1,10 +1,22 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Menu } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { useAuth } from '@/hooks/useAuth'
 
 const MainNavigation: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await logout(); // Call the logout function from the auth context
+      navigate('/auth', { replace: true }); // Redirect to the login page
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
+  };
 
   return (
     <nav className="relative bg-background border-b border-border">
@@ -29,7 +41,15 @@ const MainNavigation: React.FC = () => {
             <NavLink to="/">Accueil</NavLink>
             <NavLink to="/categories">Catégories</NavLink>
             <NavLink to="/post-ad">Publier</NavLink>
-            <NavLink to="#">Connexion</NavLink>
+            {user && <NavLink to="/admin-dashboard">Admin</NavLink>}
+            {user ? (
+              <button onClick={handleLogout} className="relative overflow-hidden group inline-block text-foreground hover:text-primary transition-colors duration-300">
+                Déconnexion
+                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
+              </button>
+            ) : (
+              <NavLink to="/auth">Connexion</NavLink>
+            )}
           </div>
         </div>
 
@@ -39,7 +59,15 @@ const MainNavigation: React.FC = () => {
             <NavLink to="/" mobile>Accueil</NavLink>
             <NavLink to="/categories" mobile>Catégories</NavLink>
             <NavLink to="/post-ad" mobile>Publier</NavLink>
-            <NavLink to="#" mobile>Connexion</NavLink>
+            {user && <NavLink to="/admin-dashboard" mobile>Admin</NavLink>}
+            {user ? (
+              <button onClick={handleLogout} className="relative overflow-hidden group inline-block text-foreground hover:text-primary transition-colors duration-300">
+                Déconnexion
+                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
+              </button>
+            ) : (
+              <NavLink to="/auth">Connexion</NavLink>
+            )}
           </div>
         )}
       </div>
