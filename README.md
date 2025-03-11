@@ -27,6 +27,11 @@ As part of my CDA training, I worked on various projects and exercises to improv
 |   └── exercices_docker
 |       ├── quest-1726-docker-express
 |       └── ...
+|   └── exercises_test
+|       ├── tester-un-composant-react
+|       ├── tests-end-to-end-playwright
+|       ├── wns-test-display-name
+|       └── ...
 └── ...
 ```
 
