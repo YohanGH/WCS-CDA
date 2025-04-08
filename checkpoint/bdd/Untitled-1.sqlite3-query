@@ -1,0 +1,91 @@
+-- database: ../../db.sqlite
+
+-- Use the ▷ button in the top right corner to run the entire file.
+
+CREATE TABLE IF NOT EXISTS `Recruiter` (
+	`id` integer primary key NOT NULL UNIQUE,
+	`login` TEXT NOT NULL UNIQUE,
+	`password` TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS `Candidate` (
+	`id` integer primary key NOT NULL UNIQUE,
+	`login` TEXT NOT NULL UNIQUE,
+	`password` TEXT NOT NULL,
+	`lastname` TEXT NOT NULL,
+	`firstname` TEXT NOT NULL,
+	`email` TEXT NOT NULL,
+	`presentation` TEXT,
+	`phone_number` TEXT
+);
+CREATE TABLE IF NOT EXISTS `Company` (
+	`id` integer primary key NOT NULL UNIQUE,
+	`name` TEXT NOT NULL,
+	`description` TEXT NOT NULL,
+	`recruiter_id` INTEGER NOT NULL UNIQUE,
+FOREIGN KEY(`recruiter_id`) REFERENCES `Recruiter`(`id`)
+);
+CREATE TABLE IF NOT EXISTS `Job_offer` (
+	`id` integer primary key NOT NULL UNIQUE,
+	`title_post` TEXT NOT NULL,
+	`job_description` TEXT NOT NULL,
+	`city_post` TEXT NOT NULL,
+	`company_id` INTEGER NOT NULL,
+FOREIGN KEY(`company_id`) REFERENCES `Company`(`id`)
+);
+CREATE TABLE IF NOT EXISTS `job_applications` (
+	`id` integer primary key NOT NULL UNIQUE,
+	`candidate_id` INTEGER NOT NULL,
+	`job_offer_id` INTEGER NOT NULL,
+CONSTRAINT unique_candidate_offer UNIQUE (candidate_id, job_offer_id),
+FOREIGN KEY(`candidate_id`) REFERENCES `Candidate`(`id`),
+FOREIGN KEY(`job_offer_id`) REFERENCES `Job_offer`(`id`)
+);
+
+-- Requetes SQL
+-- 1. Insertion de donnees dans la table Recruiter
+INSERT INTO Recruiter (login, password)
+VALUES ('capitaine_invincible', 'laser123');
+
+-- 2. Insertion de donnees dans la table Candidate
+INSERT INTO Candidate (login, password, lastname, firstname, email, phone_number, presentation)
+VALUES 
+  ('explorateur1', 'passastro1', 'Zorg', 'Xenon', 'zorg@example.com', '+330123456789', 'Explorateur intrepide à la recherche d univers inexplores.'),
+  ('explorateur2', 'passastro2', 'Rex', 'Andromede','rex@example.com', '+339876543210', 'Aventurier galactique avec un humour intersideral.');
+-- 3. Insertion d'un entrepise (creee par le recruteur1)
+INSERT INTO Company (name, description, recruiter_id)
+VALUES ('Invincible', 'Vaisseau spatial ultra-technologique, assemble d idees aussi folles que celles de Lem.', 1);
+-- 4. Intertion d'offre d'emploi pour l'entrepise
+INSERT INTO Job_Offer (title_post, job_description, city_post, company_id)
+VALUES 
+('Mission Zog', 'Explorer la planète Zog ou la gravite semble jouer à cache-cache.', 'Zog', 1),
+('Operation Comete Folle', 'Poursuivre une comete aux trajectoires imprevisibles, digne d un roman de Lem.', 'Comete Alpha', 1);
+
+
+-- 5. Insertion de candidatures
+-- Le explorateur1 postule aux deux offres et le explorateur2 postule à la premiere offre
+INSERT INTO job_applications (candidate_id, job_offer_id)
+VALUES 
+  (1, 1),
+  (1, 2),
+  (2, 1);
+
+-- Requetes - Toutes les offres d'emploi
+SELECT * FROM Job_Offer;
+
+-- Requetes - Toutes les offres d'emploi d'une ville
+SELECT * FROM Job_Offer
+WHERE city_post = 'Zog';
+
+-- Requetes - Les informations de tous les candidats qui ont postule a une offre precise
+SELECT Candidate.*
+FROM Candidate
+JOIN job_applications ON Candidate.id = job_applications.candidate_id
+WHERE job_applications.job_offer_id = 1;
+
+-- Requetes - Les informations de tous les candidats qui ont postule aux offres d'une entreprise
+SELECT DISTINCT Candidate.*
+FROM Candidate
+JOIN job_applications ON Candidate.id = job_applications.candidate_id
+JOIN Job_Offer ON job_applications.job_offer_id = Job_Offer.id
+JOIN Company ON Job_Offer.company_id = Company.id
+WHERE Company.name = 'Invincible';

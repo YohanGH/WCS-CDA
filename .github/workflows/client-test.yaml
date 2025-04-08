@@ -1,0 +1,16 @@
+name: client-tests-workflow
+
+on: pull_request
+
+jobs:
+  test-client:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - name: Goto client and run tests
+        run: cd module_1/exercises_vite_react/the-good-corner/frontend && pnpm i && pnpm test

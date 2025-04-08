@@ -1,5 +1,6 @@
 # CHANGELOG
 
+- Part 17 Add test in project => { commit: a99313c391a63d7cf3fceaa9603721d35a7d6c6b }
 - Part 16 Add authentication and cookies in frontend ==> { commit: 43b0aaa22f58c61603034ff1718d67b66c522fbe }
 - Part 15 Add authentication and cookies in backend ==> { commit: 618c1bc4f6c087d7c21677ced8ad095d57b0f898 }
 - Part 14 Add docjer in app the good corner ==> { commit: f1b1222a7a05b0412908150e5f94d343701064e8}
