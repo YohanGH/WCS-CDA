@@ -21,6 +21,9 @@ jobs:
     if: github.base_ref == 'main'
     runs-on: ubuntu-latest
     steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
@@ -37,5 +40,5 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          context: "{{defaultContext}}:client"
+          context: ./module_1/exercises_vite_react/the-good-corner/frontend
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/wcs:latest
