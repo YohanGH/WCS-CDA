@@ -8,9 +8,34 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v4
+
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
           version: 10
+
       - name: Goto client and run tests
         run: cd module_1/exercises_vite_react/the-good-corner/frontend && pnpm i && pnpm test
+  docker:
+    needs: test-front
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v4
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          context: "{{defaultContext}}:client"
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/wcs:latest
