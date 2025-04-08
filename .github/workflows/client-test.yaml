@@ -18,7 +18,7 @@ jobs:
         run: cd module_1/exercises_vite_react/the-good-corner/frontend && pnpm i && pnpm test
   docker:
     needs: test-client
-    if: github.ref == 'refs/heads/main'
+    if: github.base_ref == 'main'
     runs-on: ubuntu-latest
     steps:
       - name: Set up QEMU
