@@ -10,6 +10,10 @@
 #                                                                              #
 # **************************************************************************** #
 
+# Bug git
+module_1/exercises_test/tester-un-composant-react/
+module_1/exercises_test/wns-test-display-name/
+
 # Fichiers de sauvegarde
 *.bak
 *.tmp
