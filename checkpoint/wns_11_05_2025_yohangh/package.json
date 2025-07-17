@@ -1,0 +1,12 @@
+{
+  "name": "wns-checkpoint-front",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "docker compose up --build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
